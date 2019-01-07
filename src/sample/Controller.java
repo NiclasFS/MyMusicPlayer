@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.media.*;
 import javafx.scene.control.Button;
 
@@ -14,7 +16,12 @@ public class Controller implements Initializable {
     private MediaView mediaV;
 
     @FXML
-    private Button play;
+    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist;
+
+
+    private Label lbSongs, lbPlaylist, lbSongTitle;
+
+    private ListView lvPlaylist, lvSongList;
 
     private MediaPlayer mp;
     private Media me;
