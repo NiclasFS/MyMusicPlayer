@@ -21,8 +21,7 @@ public class Main extends Application {
     public static void main(String[] args) {
 
         launch(args);
-
+//et eller andet
     }
-
     //robert
 }
