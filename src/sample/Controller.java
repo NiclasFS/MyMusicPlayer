@@ -3,6 +3,7 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.media.*;
 import javafx.scene.control.Button;
 import javafx.collections.ObservableList;
@@ -39,18 +40,7 @@ public class Controller implements Initializable {
      * @param resources
      */
     public void initialize(URL location, ResourceBundle resources){
-        // Build the path to the location of the media file
-        //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
-        String path = new File("src/sample/media/KieLoBot_Alles_Leer.mp3").getAbsolutePath();
-        // Create new Media object (the actual media content)
-        me = new Media(new File(path).toURI().toString());
-        // Create new MediaPlayer and attach the media to be played
-        mp = new MediaPlayer(me);
-        //
-        mediaV.setMediaPlayer(mp);
-        // mp.setAutoPlay(true);
-        // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
-        mp.setAutoPlay(false);
+
 
         Playlist myPlaylist = new Playlist();
         Songs song1 = new Songs(1);
@@ -67,7 +57,7 @@ public class Controller implements Initializable {
             items.add(myPlaylist.songList.get(i).printValues());
         }
         lvSongList.setItems(items);
-
+        lvSongList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
     }
@@ -78,7 +68,26 @@ public class Controller implements Initializable {
     private void handlePlay()
     {
         // Play the mediaPlayer with the attached media
+
+        ObservableList selectedSong = lvSongList.getSelectionModel().getSelectedItems();
+        
+
+
         mp.play();
+        System.out.println(selectedSong);
+
+        // Build the path to the location of the media file
+        //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
+        String path = new File("src/sample/media/"+selectedSong.).getAbsolutePath();
+        // Create new Media object (the actual media content)
+        me = new Media(new File(path).toURI().toString());
+        // Create new MediaPlayer and attach the media to be played
+        mp = new MediaPlayer(me);
+        //
+        mediaV.setMediaPlayer(mp);
+        // mp.setAutoPlay(true);
+        // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
+        mp.setAutoPlay(false);
 
     }
     @FXML
