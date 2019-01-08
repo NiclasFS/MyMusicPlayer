@@ -1,9 +1,12 @@
 package sample;
 
+import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.media.*;
 import javafx.scene.control.Button;
+import javafx.collections.ObservableList;
+
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,8 +58,16 @@ public class Controller implements Initializable {
         //song1.printValues();
         Songs song2 = new Songs(2);
         myPlaylist.addSongToPlaylist(song2);
-        //song2.printValues();
+        song2.printValues();
         System.out.println(myPlaylist.getSongList());
+
+        //Adding all song objects from myPlayList to items as String
+        ObservableList<String> items = FXCollections.observableArrayList();
+        for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
+            items.add(myPlaylist.songList.get(i).printValues());
+        }
+        lvSongList.setItems(items);
+
 
 
     }
