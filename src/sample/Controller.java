@@ -14,15 +14,13 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     @FXML
     private MediaView mediaV;
-
     @FXML
     private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist;
-
-
+    @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
-
+    @FXML
     private ListView lvPlaylist, lvSongList;
-
+    @FXML
     private MediaPlayer mp;
     private Media me;
 
@@ -36,7 +34,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         // Build the path to the location of the media file
         //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
-        String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
+        String path = new File("src/sample/media/KieLoBot_Alles_Leer.mp3").getAbsolutePath();
         // Create new Media object (the actual media content)
         me = new Media(new File(path).toURI().toString());
         // Create new MediaPlayer and attach the media to be played
@@ -57,6 +55,16 @@ public class Controller implements Initializable {
     {
         // Play the mediaPlayer with the attached media
         mp.play();
-    }
 
+    }
+    @FXML
+    private void handlePause()
+    {
+        mp.pause();
+    }
+    @FXML
+    private void handleStop()
+    {
+        mp.stop();
+    }
 }
