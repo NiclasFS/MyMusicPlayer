@@ -7,6 +7,13 @@ private String artistName;
 private String path;
 private int songID;
 
+    public Songs(int songID){
+        this.songID = songID;
+    }
+
+    public String printValues(){
+        return "trackname: " + trackName + "\n artistname:" + artistName + "\n path: " + path + "\n";
+    }
 
     public String getTrackName() {
         return trackName;
