@@ -1,3 +1,5 @@
+package sample;
+
 public class Songs {
 
 private String trackName;
@@ -5,6 +7,13 @@ private String artistName;
 private String path;
 private int songID;
 
+    public Songs(int songID){
+        this.songID = songID;
+    }
+
+    public void printValues(){
+        System.out.println("trackname: " + trackName + "\n artistname:" + artistName + "\n path: " + path + "\n");
+    }
 
     public String getTrackName() {
         return trackName;
