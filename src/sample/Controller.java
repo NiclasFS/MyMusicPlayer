@@ -46,7 +46,6 @@ public class Controller implements Initializable {
         mp.setAutoPlay(false);
 
     }
-
     @FXML
     /**
      * Handler for the play button
