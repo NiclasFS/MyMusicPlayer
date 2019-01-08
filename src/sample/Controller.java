@@ -60,7 +60,6 @@ public class Controller implements Initializable {
 
 
     }
-
     @FXML
     /**
      * Handler for the play button
