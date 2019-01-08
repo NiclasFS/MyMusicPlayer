@@ -25,6 +25,10 @@ public class Controller implements Initializable {
     private Media me;
 
 
+
+
+
+
     /**
      * This method is invoked automatically in the beginning. Used for initializing, loading data etc.
      *
@@ -44,6 +48,16 @@ public class Controller implements Initializable {
         // mp.setAutoPlay(true);
         // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
         mp.setAutoPlay(false);
+
+        Playlist myPlaylist = new Playlist();
+        Songs song1 = new Songs(1);
+        myPlaylist.addSongToPlaylist(song1);
+        //song1.printValues();
+        Songs song2 = new Songs(2);
+        myPlaylist.addSongToPlaylist(song2);
+        //song2.printValues();
+        System.out.println(myPlaylist.getSongList());
+
 
     }
 
@@ -66,5 +80,10 @@ public class Controller implements Initializable {
     private void handleStop()
     {
         mp.stop();
+    }
+
+    //populate listview
+    private void populate(){
+
     }
 }
