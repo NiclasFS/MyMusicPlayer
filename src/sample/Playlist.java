@@ -6,13 +6,38 @@ public class Playlist {
 
     private String playlistName;
     private String sequence;
-    ArrayList<Songs> songlist = new ArrayList<>();
+
+
+
+    ArrayList<Songs> songList = new ArrayList<>();
 
 
     // Adds a song object to the song list
-    private void addSongToPlaylist()
+    public void addSongToPlaylist(Songs song)
     {
+        //Getting the values from the database and storing it in the song object
+        int counter = 1;
+        DB.selectSQL("Select * from tblSongs where fldSongID = '"+song.getSongID()+"'");
+        do{
+            String data = DB.getData();
+            if (data.equals(DB.NOMOREDATA)){
+                break;
+            }else{
+                if(counter == 2){
+                    song.setPath(data);
+                }
+                if(counter == 3){
+                    song.setArtistName(data);
+                }
+                if(counter == 4){
+                    song.setTrackName(data);
+                }
+            }
+            counter ++;
+        } while(true);
 
+        //Add this song to the songList ArrayList
+        songList.add(song);
 
     }
 
@@ -30,5 +55,9 @@ public class Playlist {
 
     public void setSequence(String sequence) {
         this.sequence = sequence;
+    }
+
+    public ArrayList<Songs> getSongList() {
+        return songList;
     }
 }
