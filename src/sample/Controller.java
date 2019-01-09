@@ -1,7 +1,7 @@
 package sample;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -37,6 +37,7 @@ public class Controller implements Initializable {
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
 
+
     private boolean isPaused = false;
 
     //ArrayList<Songs> allSongsList = null;
@@ -66,6 +67,7 @@ public class Controller implements Initializable {
             items.add(myPlaylist.songList.get(i));
         }
 
+
         //Setting the items/objects in the listview
         lvSongList.setItems(items);
 
@@ -78,6 +80,7 @@ public class Controller implements Initializable {
      */
     private void handlePlay()
     {
+
         // Play the mediaPlayer with the attached media
 
         //Storing the selected
@@ -85,8 +88,10 @@ public class Controller implements Initializable {
 
         System.out.println(selectedSong.getPath());
 
+
         lbSongTitle.setText(selectedSong.getArtistName() +" - " + selectedSong.getTrackName ());
         //if(!isPaused){
+
             // Build the path to the location of the media file
             //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
             String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
@@ -99,7 +104,9 @@ public class Controller implements Initializable {
             // mp.setAutoPlay(true);
             // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
             mp.setAutoPlay(false);
+
         //}
+
 
         mp.play();
 
