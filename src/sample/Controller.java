@@ -85,6 +85,7 @@ public class Controller implements Initializable {
 
         System.out.println(selectedSong.getPath());
 
+        lbSongTitle.setText(selectedSong.getArtistName() +" - " + selectedSong.getTrackName ());
         //if(!isPaused){
             // Build the path to the location of the media file
             //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
