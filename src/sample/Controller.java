@@ -23,15 +23,18 @@ public class Controller implements Initializable {
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
     @FXML
-    private ListView lvPlaylist, lvSongList;
+    private ListView lvPlaylist;
+    @FXML
+    private ListView<Songs> lvSongList;
     @FXML
     private MediaPlayer mp;
     private Media me;
 
+    Playlist myPlaylist = new Playlist();
+    Songs song1 = new Songs(1);
+    Songs song2 = new Songs(2);
 
-
-
-
+    //ArrayList<Songs> allSongsList = null;
 
     /**
      * This method is invoked automatically in the beginning. Used for initializing, loading data etc.
@@ -42,23 +45,25 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
 
-        Playlist myPlaylist = new Playlist();
-        Songs song1 = new Songs(1);
+
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
-        Songs song2 = new Songs(2);
         myPlaylist.addSongToPlaylist(song2);
-        song2.printValues();
+        //song2.printValues();
+        //allSongsList = myPlaylist.getSongList();
         System.out.println(myPlaylist.getSongList());
 
-        //Adding all song objects from myPlayList to items as String
-        ObservableList<String> items = FXCollections.observableArrayList();
+        //Adding all song objects from myPlayList to items as Songs
+        ObservableList<Songs> items = FXCollections.observableArrayList();
         for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
-            items.add(myPlaylist.songList.get(i).printValues());
+            //adding to ArrayList in playlist object
+            items.add(myPlaylist.songList.get(i));
         }
-        lvSongList.setItems(items);
-        lvSongList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        //Setting the items/objects in the listview
+        lvSongList.setItems(items);
+
+        lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
     @FXML
@@ -67,18 +72,17 @@ public class Controller implements Initializable {
      */
     private void handlePlay()
     {
+
         // Play the mediaPlayer with the attached media
 
-        ObservableList selectedSong = lvSongList.getSelectionModel().getSelectedItems();
-        
+        //Storing the selected
+        Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
-
-        mp.play();
-        System.out.println(selectedSong);
+        System.out.println(selectedSong.getPath());
 
         // Build the path to the location of the media file
         //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
-        String path = new File("src/sample/media/"+selectedSong.).getAbsolutePath();
+        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
         // Create new Media object (the actual media content)
         me = new Media(new File(path).toURI().toString());
         // Create new MediaPlayer and attach the media to be played
@@ -88,6 +92,8 @@ public class Controller implements Initializable {
         // mp.setAutoPlay(true);
         // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
         mp.setAutoPlay(false);
+        mp.play();
+
 
     }
     @FXML
