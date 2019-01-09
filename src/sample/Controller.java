@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -11,6 +12,7 @@ import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import java.io.*;
 import java.net.*;
 import java.util.ResourceBundle;
@@ -19,7 +21,7 @@ public class Controller implements Initializable {
     @FXML
     private MediaView mediaV;
     @FXML
-    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist;
+    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue;
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
     @FXML
@@ -33,6 +35,7 @@ public class Controller implements Initializable {
     Playlist myPlaylist = new Playlist();
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
+    Songs song3 = new Songs(3);
 
     private boolean isPaused = false;
 
@@ -51,6 +54,7 @@ public class Controller implements Initializable {
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
         myPlaylist.addSongToPlaylist(song2);
+        myPlaylist.addSongToPlaylist(song3);
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
         System.out.println(myPlaylist.getSongList());
@@ -74,7 +78,6 @@ public class Controller implements Initializable {
      */
     private void handlePlay()
     {
-
         // Play the mediaPlayer with the attached media
 
         //Storing the selected
@@ -82,7 +85,7 @@ public class Controller implements Initializable {
 
         System.out.println(selectedSong.getPath());
 
-        if(!isPaused){
+        //if(!isPaused){
             // Build the path to the location of the media file
             //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
             String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
@@ -95,7 +98,7 @@ public class Controller implements Initializable {
             // mp.setAutoPlay(true);
             // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
             mp.setAutoPlay(false);
-        }
+        //}
 
         mp.play();
 
@@ -113,6 +116,27 @@ public class Controller implements Initializable {
     private void handleStop()
     {
         mp.stop();
+    }
+
+    @FXML
+    /**
+     *
+     */
+    public void handleContinue () {
+        Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
+        System.out.println(selectedSong.getPath());
+
+        if(!isPaused){
+        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
+        // Create new Media object (the actual media content)
+        me = new Media(new File(path).toURI().toString());
+        // Create new MediaPlayer and attach the media to be played
+        mp = new MediaPlayer(me);
+        mediaV.setMediaPlayer(mp);
+        mp.setAutoPlay(false);
+        }
+        mp.play();
+
     }
 
     //populate listview

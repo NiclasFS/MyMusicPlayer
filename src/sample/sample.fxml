@@ -39,6 +39,7 @@
                </font>
             </Label>
             <MediaView fx:id="mediaV" fitHeight="200.0" fitWidth="200.0" layoutX="179.0" layoutY="205.0" />
+            <Button fx:id="bContinue" layoutX="401.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
          </children></AnchorPane>
   </items>
 </SplitPane>
