@@ -36,6 +36,7 @@ public class Controller implements Initializable {
 
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
     Playlist myPlaylist = new Playlist(); //The playlist containing all songs
+
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
@@ -58,6 +59,8 @@ public class Controller implements Initializable {
 
         playlistsList.add(myPlaylist); //temporary for testing
 
+        myPlaylist.setPlaylistName("All Songs");
+
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
         myPlaylist.addSongToPlaylist(song2);
@@ -77,7 +80,7 @@ public class Controller implements Initializable {
         //Setting the items/objects in the listview
         lvSongList.setItems(items);
 
-                lvSongList.setCellFactory(param -> new ListCell<>() {
+        lvSongList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Songs item, boolean empty) {
                 super.updateItem(item, empty);
@@ -183,6 +186,19 @@ public class Controller implements Initializable {
         //Setting the items/objects in the listview
         lvPlaylist.setItems(playlistItems);
         lvPlaylist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //setting name as text in listview
+        lvPlaylist.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Playlist item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getPlaylistName() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getPlaylistName());
+                }
+            }
+        });
     }
 
 
