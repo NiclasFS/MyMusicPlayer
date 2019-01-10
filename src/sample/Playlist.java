@@ -6,10 +6,11 @@ public class Playlist {
 
     private String playlistName;
     private String sequence;
-
-
-
     ArrayList<Songs> songList = new ArrayList<>();
+
+    public Playlist(String playlistName){
+        this.playlistName = playlistName;
+    }
 
 
     // Adds a song object to the song list

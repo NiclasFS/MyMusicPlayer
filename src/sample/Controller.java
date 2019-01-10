@@ -16,8 +16,10 @@ import javafx.fxml.Initializable;
 
 import java.io.*;
 import java.net.*;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 public class Controller implements Initializable {
     @FXML
@@ -34,14 +36,18 @@ public class Controller implements Initializable {
     private MediaPlayer mp;
     private Media me;
 
+    Songs selectedSong;
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
-    Playlist myPlaylist = new Playlist(); //The playlist containing all songs
+    //Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
     Songs song4 = new Songs(4);
     Songs song5 = new Songs(5);
+    Songs song6 = new Songs(6);
+    Songs song7 = new Songs(6);
+    Songs song8 = new Songs(6);
 
 
 
@@ -57,7 +63,9 @@ public class Controller implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources){
 
-        playlistsList.add(myPlaylist); //temporary for testing
+        loadPlaylistsFromDB();
+
+        /*playlistsList.add(myPlaylist); //temporary for testing
 
         myPlaylist.setPlaylistName("All Songs");
 
@@ -67,15 +75,28 @@ public class Controller implements Initializable {
         myPlaylist.addSongToPlaylist(song3);
         myPlaylist.addSongToPlaylist(song4);
         myPlaylist.addSongToPlaylist(song5);
+        myPlaylist.addSongToPlaylist(song6);
+        myPlaylist.addSongToPlaylist(song7);
+        myPlaylist.addSongToPlaylist(song8);*/
+
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
-        System.out.println(myPlaylist.getSongList());
+        //System.out.println(myPlaylist.getSongList());
 
-        //Adding all song objects from myPlayList to items as Songs
+
+
+        //Finding the playlist called "All Songs" and storing it as allSongsPlaylist
+        Playlist allSongsPlaylist = new Playlist("temp");
+        for (Playlist element:playlistsList) {
+            if(element.getPlaylistName().equals("All Songs")){
+                allSongsPlaylist = element;
+            }
+        }
+        //Adding all song objects from "All Songs" playlist to items as Songs
         ObservableList<Songs> items = FXCollections.observableArrayList();
-        for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
+        for (int i = 0; i < allSongsPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
-            items.add(myPlaylist.songList.get(i));
+            items.add(allSongsPlaylist.songList.get(i));
         }
         //Setting the items/objects in the listview
         lvSongList.setItems(items);
@@ -102,6 +123,7 @@ public class Controller implements Initializable {
 
 
 
+
     }
     @FXML
     /**
@@ -113,7 +135,7 @@ public class Controller implements Initializable {
         // Play the mediaPlayer with the attached media
 
         //Storing the selected
-        Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
+        selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
         System.out.println(selectedSong.getPath());
 
@@ -136,9 +158,14 @@ public class Controller implements Initializable {
 
         //}
 
+        mp.setOnEndOfMedia(() -> {
+            selectNextSong();
+            handlePlay();
+        });
+
+        //getNextSongID(selectedSong, myPlaylist);
 
         mp.play();
-
 
     }
 
@@ -176,7 +203,8 @@ public class Controller implements Initializable {
 
     }
 
-
+    //updates all playlists
+    //***To be used when the user makes changes to a playlist***
     public void updatePlaylists(ObservableList<Playlist> playlistItems){
         //adding playlists to observablelist
         for (int i = 0; i < playlistsList.size(); i++) {
@@ -199,6 +227,97 @@ public class Controller implements Initializable {
                 }
             }
         });
+
+        //setting the sequence for all playlists
+        for (Playlist element:playlistsList) {
+            setPlaylistSequence(element);
+        }
+
+
+    }
+
+
+    //creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
+    public void setPlaylistSequence(Playlist playlist){
+        String sequence = "";
+        for (int i = 0; i < playlist.getSongList().size(); i++) {
+            //add the song ID to the sequence String
+            sequence += playlist.getSongList().get(i).getSongID();
+            //add delimiter character to sequence
+            sequence += ";";
+        }
+        //updating the object with the new sequence
+        playlist.setSequence(sequence);
+        //System.out.println(playlist.getSequence());
+        //updating the database with the new sequence
+        DB.updateSQL("update tblPlaylist set fldSequence = '"+sequence+"' where fldPlaylistName = '"+playlist.getPlaylistName()+"'");
+    }
+
+    public void loadPlaylistsFromDB(){
+        ArrayList<String> nameList = new ArrayList<>();
+        //Get all name Strings from tblPlaylist
+        DB.selectSQL("Select fldPlaylistName from tblPlaylist");
+        do{
+            String data = DB.getData();
+            if (data.equals(DB.NOMOREDATA)){
+                break;
+            }else{
+                nameList.add(data);
+            }
+        } while(true);
+
+        //for each name string
+        for (String nameElement:nameList) {
+            //add new Playlist object to playlistsList
+            playlistsList.add(new Playlist(nameElement));
+            DB.selectSQL("Select fldSequence from tblPlaylist where fldPlaylistName = '"+nameElement+"'");
+            String sequence = DB.getData();
+
+            //List to hold ID's from from sequence
+            ArrayList<Integer> IDList = new ArrayList<>();
+            //splitting the string
+            StringTokenizer IDtokens = new StringTokenizer(sequence, ";");
+            //adding ID's from sequence to IDArray as individual elements
+            while (IDtokens.hasMoreTokens()){
+                //System.out.println(IDtokens.nextToken());
+                IDList.add(Integer.parseInt(IDtokens.nextToken()));
+            }
+            //setting sequence of this playlist and adding the songs to it
+            for (int i = 0; i < playlistsList.size(); i++) {
+                //finding the right playlist
+                if(playlistsList.get(i).getPlaylistName().equals(nameElement)){
+                    //setting the sequence variable of the playlist
+                    playlistsList.get(i).setSequence(sequence);
+                    //adding the songs to the playlist
+                    for (Integer IDelement:IDList) {
+                        playlistsList.get(i).addSongToPlaylist(new Songs(IDelement));
+                    }
+                }
+            }
+
+        }
+    }
+
+    /*
+    //converting sequence from a playlist into list of ID's
+    public void convertSequenceToIDs(Playlist playlist){
+
+        ArrayList<Integer> IDList = new ArrayList<>();
+
+        //splitting the string
+        StringTokenizer IDtokens = new StringTokenizer(playlist.getSequence(), ";");
+        //adding ID's from sequence to IDArray as individual elements
+        while (IDtokens.hasMoreTokens()){
+            //System.out.println(IDtokens.nextToken());
+            IDList.add(Integer.parseInt(IDtokens.nextToken()));
+        }
+    }*/
+
+    public void selectNextSong(){
+        //check where in the sequence the selectedSong is
+        int songIndex = lvSongList.getSelectionModel().getSelectedIndex();
+        songIndex++;
+        lvSongList.getSelectionModel().select(songIndex);
     }
 
 
