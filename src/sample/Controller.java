@@ -36,12 +36,15 @@ public class Controller implements Initializable {
 
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
     Playlist myPlaylist = new Playlist(); //The playlist containing all songs
+    //Playlist tester = new Playlist(); // Testing playlist with two songs
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
     Songs song4 = new Songs(4);
     Songs song5 = new Songs(5);
+
+    ObservableList<Songs> items = FXCollections.observableArrayList();
 
 
 
@@ -58,6 +61,9 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
         playlistsList.add(myPlaylist); //temporary for testing
+        //playlistsList.add(tester);     //temporary for testing
+        //tester.setPlaylistName("TEST#1");
+
 
         myPlaylist.setPlaylistName("All Songs");
 
@@ -70,15 +76,19 @@ public class Controller implements Initializable {
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
         System.out.println(myPlaylist.getSongList());
+        //tester.addSongToPlaylist(song1);
+
 
         //Adding all song objects from myPlayList to items as Songs
-        ObservableList<Songs> items = FXCollections.observableArrayList();
+/*
         for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
             items.add(myPlaylist.songList.get(i));
         }
+        */
+        updateSonglist(myPlaylist);
         //Setting the items/objects in the listview
-        lvSongList.setItems(items);
+        //lvSongList.setItems(items);
 
         lvSongList.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -121,18 +131,17 @@ public class Controller implements Initializable {
         lbSongTitle.setText(selectedSong.getArtistName() +" - " + selectedSong.getTrackName ());
         //if(!isPaused){
 
-            // Build the path to the location of the media file
-            //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
-            String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
-            // Create new Media object (the actual media content)
-            me = new Media(new File(path).toURI().toString());
-            // Create new MediaPlayer and attach the media to be played
-            mp = new MediaPlayer(me);
-            //
-            mediaV.setMediaPlayer(mp);
-            // mp.setAutoPlay(true);
-            // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
-            mp.setAutoPlay(false);
+        // Build the path to the location of the media file
+        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
+        // Create new Media object (the actual media content)
+        me = new Media(new File(path).toURI().toString());
+        // Create new MediaPlayer and attach the media to be played
+        mp = new MediaPlayer(me);
+        //
+        mediaV.setMediaPlayer(mp);
+        // mp.setAutoPlay(true);
+        // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
+        mp.setAutoPlay(false);
 
         //}
 
@@ -164,16 +173,25 @@ public class Controller implements Initializable {
         System.out.println(selectedSong.getPath());
 
         if(!isPaused){
-        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
-        // Create new Media object (the actual media content)
-        me = new Media(new File(path).toURI().toString());
-        // Create new MediaPlayer and attach the media to be played
-        mp = new MediaPlayer(me);
-        mediaV.setMediaPlayer(mp);
-        mp.setAutoPlay(false);
+            String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
+            // Create new Media object (the actual media content)
+            me = new Media(new File(path).toURI().toString());
+            // Create new MediaPlayer and attach the media to be played
+            mp = new MediaPlayer(me);
+            mediaV.setMediaPlayer(mp);
+            mp.setAutoPlay(false);
         }
         mp.play();
 
+    }
+
+    /**
+     * This method updates the ListView with songs to the current content that needs to be there.
+     * @param selectedPlaylist is used to get a list of all songs currently in the application.
+     */
+    public void updateSonglist(Playlist selectedPlaylist) {
+        items.setAll(selectedPlaylist.songList);
+        lvSongList.setItems(items);
     }
 
 
@@ -200,7 +218,18 @@ public class Controller implements Initializable {
             }
         });
     }
+    @FXML
+    /**
+     * This method updates the ListView of songs to the corresponding playlist
+     */
+    private void getPlaylistInformation () {
+        // New object that gets the songs(items) from the selected playlist.
+        Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+        // Updates the ListView to show the songs(items) in the selected playlist.
+        updateSonglist(selectedPlaylist);
 
-
-
+        //System.out.println(selectedPlaylist.getSongList().size());
+        //System.out.println(selectedPlaylist.getPlaylistName());
+        //System.out.println(selectedPlaylist.getSongList().toString());
+    }
 }
