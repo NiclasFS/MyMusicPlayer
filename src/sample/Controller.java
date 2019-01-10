@@ -2,11 +2,12 @@ package sample;
 
 import javafx.collections.FXCollections;
 
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+
 import javafx.scene.media.*;
-import javafx.scene.control.Button;
 import javafx.collections.ObservableList;
 
 
@@ -75,6 +76,21 @@ public class Controller implements Initializable {
         }
         //Setting the items/objects in the listview
         lvSongList.setItems(items);
+
+                lvSongList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Songs item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getTrackName() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTrackName());
+                }
+            }
+        });
+
+
         lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         //setting Playlists in listview
@@ -157,6 +173,7 @@ public class Controller implements Initializable {
 
     }
 
+
     public void updatePlaylists(ObservableList<Playlist> playlistItems){
         //adding playlists to observablelist
         for (int i = 0; i < playlistsList.size(); i++) {
@@ -167,6 +184,7 @@ public class Controller implements Initializable {
         lvPlaylist.setItems(playlistItems);
         lvPlaylist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
+
 
 
 }
