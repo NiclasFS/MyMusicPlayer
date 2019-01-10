@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.media.*;
 import javafx.collections.ObservableList;
 
@@ -23,9 +24,13 @@ public class Controller implements Initializable {
     @FXML
     private MediaView mediaV;
     @FXML
-    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue;
+    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue, bPlaylistAddOK, bCreatePlaylist;
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
+    @FXML
+    private Pane pAddPlaylist;
+    @FXML
+    private TextField tfPlaylistName;
     @FXML
     private ListView<Playlist> lvPlaylist;
     @FXML
@@ -34,9 +39,13 @@ public class Controller implements Initializable {
     private MediaPlayer mp;
     private Media me;
 
-    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
-    Playlist myPlaylist = new Playlist(); //The playlist containing all songs
+    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlist
+  
     //Playlist tester = new Playlist(); // Testing playlist with two songs
+
+    Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
+    Playlist deleteTester = new Playlist("Delete tester");
+
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
@@ -46,7 +55,7 @@ public class Controller implements Initializable {
 
     ObservableList<Songs> items = FXCollections.observableArrayList();
 
-
+    ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
 
     private boolean isPaused = false;
 
@@ -61,11 +70,12 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
         playlistsList.add(myPlaylist); //temporary for testing
+
         //playlistsList.add(tester);     //temporary for testing
         //tester.setPlaylistName("TEST#1");
 
 
-        myPlaylist.setPlaylistName("All Songs");
+
 
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
@@ -75,12 +85,12 @@ public class Controller implements Initializable {
         myPlaylist.addSongToPlaylist(song5);
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
-        System.out.println(myPlaylist.getSongList());
-        //tester.addSongToPlaylist(song1);
 
+       // System.out.println(myPlaylist.getSongList());
 
         //Adding all song objects from myPlayList to items as Songs
-/*
+
+
         for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
             items.add(myPlaylist.songList.get(i));
@@ -107,7 +117,7 @@ public class Controller implements Initializable {
         lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         //setting Playlists in listview
-        ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
+
         updatePlaylists(playlistItems);
 
 
@@ -125,13 +135,14 @@ public class Controller implements Initializable {
         //Storing the selected
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
-        System.out.println(selectedSong.getPath());
+        //System.out.println(selectedSong.getPath());
 
 
         lbSongTitle.setText(selectedSong.getArtistName() +" - " + selectedSong.getTrackName ());
         //if(!isPaused){
 
         // Build the path to the location of the media file
+
         String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
         // Create new Media object (the actual media content)
         me = new Media(new File(path).toURI().toString());
@@ -185,6 +196,7 @@ public class Controller implements Initializable {
 
     }
 
+
     /**
      * This method updates the ListView with songs to the current content that needs to be there.
      * @param selectedPlaylist is used to get a list of all songs currently in the application.
@@ -192,6 +204,69 @@ public class Controller implements Initializable {
     public void updateSonglist(Playlist selectedPlaylist) {
         items.setAll(selectedPlaylist.songList);
         lvSongList.setItems(items);
+
+    // Creates a pop up window for the user input
+    @FXML
+    public void handleCreatePlaylist()
+    {
+        pAddPlaylist.setDisable(false);
+        pAddPlaylist.setOpacity(1.0);
+    }
+
+    //Gets user input and creates a playlist with the name specified by the user
+    @FXML
+    public void handleAddPlaylist ()
+    {
+
+        String playlistName = tfPlaylistName.getText();
+
+        for (int i = 0; i < playlistItems.size(); i++) {
+            //adding to ArrayList in playlist object
+            playlistsList.remove(playlistItems.get(i));
+        }
+
+        playlistsList.add(new Playlist(playlistName));
+        updatePlaylists(playlistItems);
+
+        //Creates a temporary object which is set to the playlist in playlislist that matches the name from the user input
+        Playlist temp = new Playlist("temp");
+        for (Playlist element:playlistsList) {
+            if (element.getPlaylistName().equals(playlistName)){
+                temp = element;
+            }
+        }
+
+
+        // Stores the playlist in the database
+        DB.insertSQL("insert into tblPlaylist values ('"+temp.getPlaylistName()+"','"+temp.getSequence()+"');");
+
+        //Hides the pop up window
+        pAddPlaylist.setDisable(true);
+        pAddPlaylist.setOpacity(0.0);
+
+    }
+
+    // Deletes the selected playlist
+    public void handleDeletePlaylist ()
+    {
+        Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+
+        DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '"+selectedPlaylist.getPlaylistName()+"';");
+        //DB.deleteSQL("Delete from tblPlaylist where fldSequence = 'null';");
+        //DB.deleteSQL("delete from tblPlaylist values ('"+selectedSong+"');");
+       // System.out.println(selectedPlaylist.getPlaylistName());
+
+
+        for (int i = 0; i < playlistItems.size(); i++) {
+
+            playlistsList.remove(playlistItems.get(i));
+        }
+
+
+        lvPlaylist.getItems().remove(selectedPlaylist);
+        updatePlaylists(playlistItems);
+
+
     }
 
 
