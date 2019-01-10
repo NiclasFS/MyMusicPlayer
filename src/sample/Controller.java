@@ -41,7 +41,7 @@ public class Controller implements Initializable {
 
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
     Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
-
+    Playlist deleteTester = new Playlist("Delete tester");
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
@@ -66,6 +66,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
         playlistsList.add(myPlaylist); //temporary for testing
+        playlistsList.add(deleteTester);
 
 
 
@@ -228,19 +229,21 @@ public class Controller implements Initializable {
     // Deletes the selected playlist
     public void handleDeletePlaylist ()
     {
-        Playlist selectedSong = lvPlaylist.getSelectionModel().getSelectedItem();
+        Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
 
-        DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '"+selectedSong.getPlaylistName()+"';");
+        DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '"+selectedPlaylist.getPlaylistName()+"';");
         //DB.deleteSQL("Delete from tblPlaylist where fldSequence = 'null';");
         //DB.deleteSQL("delete from tblPlaylist values ('"+selectedSong+"');");
-        System.out.println(selectedSong.getPlaylistName());
+        System.out.println(selectedPlaylist.getPlaylistName());
+
 
         for (int i = 0; i < playlistItems.size(); i++) {
-            //adding to ArrayList in playlist object
+
             playlistsList.remove(playlistItems.get(i));
         }
 
-        lvPlaylist.getItems().remove(selectedSong);
+
+        lvPlaylist.getItems().remove(selectedPlaylist);
         updatePlaylists(playlistItems);
 
     }
