@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.media.*;
 import javafx.collections.ObservableList;
 
@@ -23,9 +24,13 @@ public class Controller implements Initializable {
     @FXML
     private MediaView mediaV;
     @FXML
-    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue;
+    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue, bPlaylistAddOK, bCreatePlaylist;
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
+    @FXML
+    private Pane pAddPlaylist;
+    @FXML
+    private TextField tfPlaylistName;
     @FXML
     private ListView<Playlist> lvPlaylist;
     @FXML
@@ -35,7 +40,7 @@ public class Controller implements Initializable {
     private Media me;
 
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
-    Playlist myPlaylist = new Playlist(); //The playlist containing all songs
+    Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
@@ -43,7 +48,9 @@ public class Controller implements Initializable {
     Songs song4 = new Songs(4);
     Songs song5 = new Songs(5);
 
+    ObservableList<Songs> items = FXCollections.observableArrayList();
 
+    ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
 
     private boolean isPaused = false;
 
@@ -59,7 +66,7 @@ public class Controller implements Initializable {
 
         playlistsList.add(myPlaylist); //temporary for testing
 
-        myPlaylist.setPlaylistName("All Songs");
+
 
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
@@ -72,7 +79,7 @@ public class Controller implements Initializable {
         System.out.println(myPlaylist.getSongList());
 
         //Adding all song objects from myPlayList to items as Songs
-        ObservableList<Songs> items = FXCollections.observableArrayList();
+
         for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
             items.add(myPlaylist.songList.get(i));
@@ -97,7 +104,7 @@ public class Controller implements Initializable {
         lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         //setting Playlists in listview
-        ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
+
         updatePlaylists(playlistItems);
 
 
@@ -173,6 +180,47 @@ public class Controller implements Initializable {
         mp.setAutoPlay(false);
         }
         mp.play();
+
+    }
+
+    // Creates a pop up window for the user input
+    @FXML
+    public void handleCreatePlaylist()
+    {
+        pAddPlaylist.setDisable(false);
+        pAddPlaylist.setOpacity(1.0);
+    }
+
+    //Gets user input and creates a playlist with the name specified by the user
+    @FXML
+    public void handleAddPlaylist ()
+    {
+
+        String playlistName = tfPlaylistName.getText();
+
+        for (int i = 0; i < playlistItems.size(); i++) {
+            //adding to ArrayList in playlist object
+            playlistsList.remove(playlistItems.get(i));
+        }
+
+        playlistsList.add(new Playlist(playlistName));
+        updatePlaylists(playlistItems);
+
+        //Creates a temporary object which is set to the playlist in playlislist that matches the name from the user input
+        Playlist temp = new Playlist("temp");
+        for (Playlist element:playlistsList) {
+            if (element.getPlaylistName().equals(playlistName)){
+                temp = element;
+            }
+        }
+
+
+        // Stores the playlist in the database
+        DB.insertSQL("insert into tblPlaylist values ('"+temp.getPlaylistName()+"','"+temp.getSequence()+"');");
+
+        //Hides the pop up window
+        pAddPlaylist.setDisable(true);
+        pAddPlaylist.setOpacity(0.0);
 
     }
 
