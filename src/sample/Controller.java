@@ -42,6 +42,7 @@ public class Controller implements Initializable {
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
     Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
 
+
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
@@ -221,6 +222,26 @@ public class Controller implements Initializable {
         //Hides the pop up window
         pAddPlaylist.setDisable(true);
         pAddPlaylist.setOpacity(0.0);
+
+    }
+
+    // Deletes the selected playlist
+    public void handleDeletePlaylist ()
+    {
+        Playlist selectedSong = lvPlaylist.getSelectionModel().getSelectedItem();
+
+        DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '"+selectedSong.getPlaylistName()+"';");
+        //DB.deleteSQL("Delete from tblPlaylist where fldSequence = 'null';");
+        //DB.deleteSQL("delete from tblPlaylist values ('"+selectedSong+"');");
+        System.out.println(selectedSong.getPlaylistName());
+
+        for (int i = 0; i < playlistItems.size(); i++) {
+            //adding to ArrayList in playlist object
+            playlistsList.remove(playlistItems.get(i));
+        }
+
+        lvPlaylist.getItems().remove(selectedSong);
+        updatePlaylists(playlistItems);
 
     }
 

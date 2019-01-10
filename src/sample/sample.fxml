@@ -17,7 +17,7 @@
          <children>
             <Button fx:id="bCreatePlaylist" layoutX="14.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleCreatePlaylist" text="Add playlist" />
             <Button fx:id="bEditPlaylist" layoutX="136.0" layoutY="643.0" mnemonicParsing="false" text="Edit" />
-            <Button fx:id="bDeletePlaylist" layoutX="231.0" layoutY="643.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="bDeletePlaylist" layoutX="231.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" text="Delete" />
             <ListView fx:id="lvPlaylist" layoutX="-2.0" layoutY="55.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="343.0" />
             <Label fx:id="lbPlaylist" layoutX="44.0" layoutY="9.0" prefHeight="38.0" prefWidth="250.0" text="My playlists">
                <font>
