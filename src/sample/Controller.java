@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -25,17 +26,21 @@ public class Controller implements Initializable {
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
     @FXML
-    private ListView lvPlaylist;
+    private ListView<Playlist> lvPlaylist;
     @FXML
     private ListView<Songs> lvSongList;
     @FXML
     private MediaPlayer mp;
     private Media me;
 
-    Playlist myPlaylist = new Playlist();
+    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
+    Playlist myPlaylist = new Playlist(); //The playlist containing all songs
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
+    Songs song4 = new Songs(4);
+    Songs song5 = new Songs(5);
+
 
 
     private boolean isPaused = false;
@@ -50,12 +55,14 @@ public class Controller implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources){
 
-
+        playlistsList.add(myPlaylist); //temporary for testing
 
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
         myPlaylist.addSongToPlaylist(song2);
         myPlaylist.addSongToPlaylist(song3);
+        myPlaylist.addSongToPlaylist(song4);
+        myPlaylist.addSongToPlaylist(song5);
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
         System.out.println(myPlaylist.getSongList());
@@ -66,12 +73,15 @@ public class Controller implements Initializable {
             //adding to ArrayList in playlist object
             items.add(myPlaylist.songList.get(i));
         }
-
-
         //Setting the items/objects in the listview
         lvSongList.setItems(items);
-
         lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        //setting Playlists in listview
+        ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
+        updatePlaylists(playlistItems);
+
+
 
     }
     @FXML
@@ -147,8 +157,16 @@ public class Controller implements Initializable {
 
     }
 
-    //populate listview
-    private void populate(){
-
+    public void updatePlaylists(ObservableList<Playlist> playlistItems){
+        //adding playlists to observablelist
+        for (int i = 0; i < playlistsList.size(); i++) {
+            //adding to ArrayList in playlist object
+            playlistItems.add(playlistsList.get(i));
+        }
+        //Setting the items/objects in the listview
+        lvPlaylist.setItems(playlistItems);
+        lvPlaylist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
+
+
 }
