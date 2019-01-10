@@ -78,7 +78,7 @@ public class Controller implements Initializable {
         myPlaylist.addSongToPlaylist(song5);
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
-        System.out.println(myPlaylist.getSongList());
+       // System.out.println(myPlaylist.getSongList());
 
         //Adding all song objects from myPlayList to items as Songs
 
@@ -124,24 +124,24 @@ public class Controller implements Initializable {
         //Storing the selected
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
-        System.out.println(selectedSong.getPath());
+        //System.out.println(selectedSong.getPath());
 
 
         lbSongTitle.setText(selectedSong.getArtistName() +" - " + selectedSong.getTrackName ());
         //if(!isPaused){
 
-            // Build the path to the location of the media file
-            //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
-            String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
-            // Create new Media object (the actual media content)
-            me = new Media(new File(path).toURI().toString());
-            // Create new MediaPlayer and attach the media to be played
-            mp = new MediaPlayer(me);
-            //
-            mediaV.setMediaPlayer(mp);
-            // mp.setAutoPlay(true);
-            // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
-            mp.setAutoPlay(false);
+        // Build the path to the location of the media file
+        //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
+        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
+        // Create new Media object (the actual media content)
+        me = new Media(new File(path).toURI().toString());
+        // Create new MediaPlayer and attach the media to be played
+        mp = new MediaPlayer(me);
+        //
+        mediaV.setMediaPlayer(mp);
+        // mp.setAutoPlay(true);
+        // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
+        mp.setAutoPlay(false);
 
         //}
 
@@ -173,13 +173,13 @@ public class Controller implements Initializable {
         System.out.println(selectedSong.getPath());
 
         if(!isPaused){
-        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
-        // Create new Media object (the actual media content)
-        me = new Media(new File(path).toURI().toString());
-        // Create new MediaPlayer and attach the media to be played
-        mp = new MediaPlayer(me);
-        mediaV.setMediaPlayer(mp);
-        mp.setAutoPlay(false);
+            String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
+            // Create new Media object (the actual media content)
+            me = new Media(new File(path).toURI().toString());
+            // Create new MediaPlayer and attach the media to be played
+            mp = new MediaPlayer(me);
+            mediaV.setMediaPlayer(mp);
+            mp.setAutoPlay(false);
         }
         mp.play();
 
@@ -234,7 +234,7 @@ public class Controller implements Initializable {
         DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '"+selectedPlaylist.getPlaylistName()+"';");
         //DB.deleteSQL("Delete from tblPlaylist where fldSequence = 'null';");
         //DB.deleteSQL("delete from tblPlaylist values ('"+selectedSong+"');");
-        System.out.println(selectedPlaylist.getPlaylistName());
+       // System.out.println(selectedPlaylist.getPlaylistName());
 
 
         for (int i = 0; i < playlistItems.size(); i++) {
