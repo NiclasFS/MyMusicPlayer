@@ -2,11 +2,12 @@ package sample;
 
 import javafx.collections.FXCollections;
 
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+
 import javafx.scene.media.*;
-import javafx.scene.control.Button;
 import javafx.collections.ObservableList;
 
 
@@ -36,6 +37,8 @@ public class Controller implements Initializable {
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
     Songs song3 = new Songs(3);
+    Songs song4 = new Songs(4);
+    Songs song5 = new Songs(5);
 
 
     private boolean isPaused = false;
@@ -56,6 +59,8 @@ public class Controller implements Initializable {
         //song1.printValues();
         myPlaylist.addSongToPlaylist(song2);
         myPlaylist.addSongToPlaylist(song3);
+        myPlaylist.addSongToPlaylist(song4);
+        myPlaylist.addSongToPlaylist(song5);
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
         System.out.println(myPlaylist.getSongList());
@@ -70,6 +75,20 @@ public class Controller implements Initializable {
 
         //Setting the items/objects in the listview
         lvSongList.setItems(items);
+
+
+                lvSongList.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Songs item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.getTrackName() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTrackName());
+                }
+            }
+        });
 
         lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -148,7 +167,4 @@ public class Controller implements Initializable {
     }
 
     //populate listview
-    private void populate(){
-
-    }
 }
