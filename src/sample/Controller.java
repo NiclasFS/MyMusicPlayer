@@ -39,9 +39,13 @@ public class Controller implements Initializable {
     private MediaPlayer mp;
     private Media me;
 
-    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
+    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlist
+  
+    //Playlist tester = new Playlist(); // Testing playlist with two songs
+
     Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
     Playlist deleteTester = new Playlist("Delete tester");
+
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
@@ -66,7 +70,10 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
         playlistsList.add(myPlaylist); //temporary for testing
-        playlistsList.add(deleteTester);
+
+        //playlistsList.add(tester);     //temporary for testing
+        //tester.setPlaylistName("TEST#1");
+
 
 
 
@@ -78,16 +85,20 @@ public class Controller implements Initializable {
         myPlaylist.addSongToPlaylist(song5);
         //song2.printValues();
         //allSongsList = myPlaylist.getSongList();
+
        // System.out.println(myPlaylist.getSongList());
 
         //Adding all song objects from myPlayList to items as Songs
+
 
         for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
             items.add(myPlaylist.songList.get(i));
         }
+        */
+        updateSonglist(myPlaylist);
         //Setting the items/objects in the listview
-        lvSongList.setItems(items);
+        //lvSongList.setItems(items);
 
         lvSongList.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -131,7 +142,7 @@ public class Controller implements Initializable {
         //if(!isPaused){
 
         // Build the path to the location of the media file
-        //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
+
         String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
         // Create new Media object (the actual media content)
         me = new Media(new File(path).toURI().toString());
@@ -184,6 +195,15 @@ public class Controller implements Initializable {
         mp.play();
 
     }
+
+
+    /**
+     * This method updates the ListView with songs to the current content that needs to be there.
+     * @param selectedPlaylist is used to get a list of all songs currently in the application.
+     */
+    public void updateSonglist(Playlist selectedPlaylist) {
+        items.setAll(selectedPlaylist.songList);
+        lvSongList.setItems(items);
 
     // Creates a pop up window for the user input
     @FXML
@@ -246,6 +266,7 @@ public class Controller implements Initializable {
         lvPlaylist.getItems().remove(selectedPlaylist);
         updatePlaylists(playlistItems);
 
+
     }
 
 
@@ -272,7 +293,18 @@ public class Controller implements Initializable {
             }
         });
     }
+    @FXML
+    /**
+     * This method updates the ListView of songs to the corresponding playlist
+     */
+    private void getPlaylistInformation () {
+        // New object that gets the songs(items) from the selected playlist.
+        Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+        // Updates the ListView to show the songs(items) in the selected playlist.
+        updateSonglist(selectedPlaylist);
 
-
-
+        //System.out.println(selectedPlaylist.getSongList().size());
+        //System.out.println(selectedPlaylist.getPlaylistName());
+        //System.out.println(selectedPlaylist.getSongList().toString());
+    }
 }
