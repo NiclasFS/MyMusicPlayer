@@ -13,7 +13,9 @@ private int songID;
 
 
     public String printValues(){
+
         return "trackname: " + trackName + "\n artistname: " + artistName + "\n path: " + path + "\n";
+
     }
 
     public String getTrackName() {
