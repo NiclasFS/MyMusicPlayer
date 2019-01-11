@@ -43,9 +43,6 @@ public class Controller implements Initializable {
 
 
     Songs selectedSong;
-    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
-    //Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
-
 
     // Declaration: ArrayLists
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlist
@@ -104,53 +101,52 @@ public class Controller implements Initializable {
         //System.out.println(myPlaylist.getSongList());
 
 
-
         //Finding the playlist called "All Songs" and storing it as allSongsPlaylist
         Playlist allSongsPlaylist = new Playlist("temp");
-        for (Playlist element:playlistsList) {
-            if(element.getPlaylistName().equals("All Songs")){
+        for (Playlist element : playlistsList) {
+            if (element.getPlaylistName().equals("All Songs")) {
                 allSongsPlaylist = element;
             }
         }
         //Adding all song objects from "All Songs" playlist to items as Songs
         ObservableList<Songs> items = FXCollections.observableArrayList();
-        for (int i = 0; i < allSongsPlaylist.getSongList().size(); i++) {
 
 
-        //song2.printValues();
-        //allSongsList = myPlaylist.getSongList();
 
-        // System.out.println(myPlaylist.getSongList());
+            //song2.printValues();
+            //allSongsList = myPlaylist.getSongList();
 
-        //Adding all song objects from myPlayList to items as Songs
-        for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
-            //adding to ArrayList in playlist object
-            items.add(allSongsPlaylist.songList.get(i));
-        }
-        // Calling updateSonglist(); to get the list of all songs on application start
-        updateSonglist(myPlaylist);
-        //Setting the items/objects in the listview
-        //lvSongList.setItems(items);
-        // Using CellFactory to make the ListViewer show the names of the songs not the object
-        lvSongList.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Songs item, boolean empty) {
-                super.updateItem(item, empty);
+            // System.out.println(myPlaylist.getSongList());
 
-                if (empty || item == null || item.getTrackName() == null) {
-                    setText(null);
-                } else {
-                    setText(item.getTrackName());
-                }
+            //Adding all song objects from myPlayList to items as Songs
+            for (int i = 0; i < allSongsPlaylist.getSongList().size(); i++) {
+                //adding to ArrayList in playlist object
+                items.add(allSongsPlaylist.songList.get(i));
             }
-        });
-        // Setting the selection mode for the lvSongList so that we can actually select songs (set as single selection)
-        lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            // Calling updateSonglist(); to get the list of all songs on application start
+            updateSonglist(allSongsPlaylist);
+            //Setting the items/objects in the listview
+            //lvSongList.setItems(items);
+            // Using CellFactory to make the ListViewer show the names of the songs not the object
+            lvSongList.setCellFactory(param -> new ListCell<>() {
+                @Override
+                protected void updateItem(Songs item, boolean empty) {
+                    super.updateItem(item, empty);
 
-        //setting Playlists in listview
-        updatePlaylists(playlistItems);
+                    if (empty || item == null || item.getTrackName() == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getTrackName());
+                    }
+                }
+            });
+            // Setting the selection mode for the lvSongList so that we can actually select songs (set as single selection)
+            lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-    }
+            //setting Playlists in listview
+            updatePlaylists(playlistItems);
+
+        }
 
     @FXML
     /**
@@ -229,39 +225,6 @@ public class Controller implements Initializable {
 
     }
 
-
-     //updates all playlists
-    //***To be used when the user makes changes to a playlist***
-    public void updatePlaylists(ObservableList<Playlist> playlistItems){
-        //adding playlists to observablelist
-        for (int i = 0; i < playlistsList.size(); i++) {
-            //adding to ArrayList in playlist object
-            playlistItems.add(playlistsList.get(i));
-        }
-        //Setting the items/objects in the listview
-        lvPlaylist.setItems(playlistItems);
-        lvPlaylist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        //setting name as text in listview
-        lvPlaylist.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Playlist item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null || item.getPlaylistName() == null) {
-                    setText(null);
-                } else {
-                    setText(item.getPlaylistName());
-                }
-            }
-        });
-
-        //setting the sequence for all playlists
-        for (Playlist element:playlistsList) {
-            setPlaylistSequence(element);
-        }
-
-
-    }
 
 
     /**
