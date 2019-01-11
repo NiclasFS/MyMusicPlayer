@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.media.*;
 import javafx.collections.ObservableList;
 
@@ -25,9 +26,13 @@ public class Controller implements Initializable {
     @FXML
     private MediaView mediaV;
     @FXML
-    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue;
+    private Button bPlay, bPause, bStop, bAddSongsToPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist, bContinue, bPlaylistAddOK, bCreatePlaylist;
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
+    @FXML
+    private Pane pAddPlaylist;
+    @FXML
+    private TextField tfPlaylistName;
     @FXML
     private ListView<Playlist> lvPlaylist;
     @FXML
@@ -36,9 +41,18 @@ public class Controller implements Initializable {
     private MediaPlayer mp;
     private Media me;
 
+
     Songs selectedSong;
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlists
     //Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
+
+
+    // Declaration: ArrayLists
+    ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlist
+    // Declaration: Playlists
+    
+    Playlist deleteTester = new Playlist("Delete tester");
+    // Declaration Songs
 
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
@@ -51,6 +65,11 @@ public class Controller implements Initializable {
 
 
 
+
+    // Declaration: ObservableList
+    ObservableList<Songs> items = FXCollections.observableArrayList();
+    ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
+    // Declaration: boolean
     private boolean isPaused = false;
 
     //ArrayList<Songs> allSongsList = null;
@@ -61,14 +80,15 @@ public class Controller implements Initializable {
      * @param location
      * @param resources
      */
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
 
         loadPlaylistsFromDB();
 
         /*playlistsList.add(myPlaylist); //temporary for testing
 
-        myPlaylist.setPlaylistName("All Songs");
-
+        //playlistsList.add(tester);     //temporary for testing
+        //tester.setPlaylistName("TEST#1");
+        // Adding songs
         myPlaylist.addSongToPlaylist(song1);
         //song1.printValues();
         myPlaylist.addSongToPlaylist(song2);
@@ -95,12 +115,23 @@ public class Controller implements Initializable {
         //Adding all song objects from "All Songs" playlist to items as Songs
         ObservableList<Songs> items = FXCollections.observableArrayList();
         for (int i = 0; i < allSongsPlaylist.getSongList().size(); i++) {
+
+
+        //song2.printValues();
+        //allSongsList = myPlaylist.getSongList();
+
+        // System.out.println(myPlaylist.getSongList());
+
+        //Adding all song objects from myPlayList to items as Songs
+        for (int i = 0; i < myPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
             items.add(allSongsPlaylist.songList.get(i));
         }
+        // Calling updateSonglist(); to get the list of all songs on application start
+        updateSonglist(myPlaylist);
         //Setting the items/objects in the listview
-        lvSongList.setItems(items);
-
+        //lvSongList.setItems(items);
+        // Using CellFactory to make the ListViewer show the names of the songs not the object
         lvSongList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Songs item, boolean empty) {
@@ -113,48 +144,44 @@ public class Controller implements Initializable {
                 }
             }
         });
-
-
+        // Setting the selection mode for the lvSongList so that we can actually select songs (set as single selection)
         lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         //setting Playlists in listview
-        ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
         updatePlaylists(playlistItems);
 
-
-
-
     }
+
     @FXML
     /**
      * Handler for the play button
      */
-    private void handlePlay()
-    {
+    private void handlePlay() {
 
         // Play the mediaPlayer with the attached media
 
-        //Storing the selected
+
+        //Storing the selected song
         selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
-        System.out.println(selectedSong.getPath());
 
+        //System.out.println(selectedSong.getPath());
 
-        lbSongTitle.setText(selectedSong.getArtistName() +" - " + selectedSong.getTrackName ());
+        // Setting the label lbSongTitle to display the currently playing artist and which song.
+        lbSongTitle.setText(selectedSong.getArtistName() + " - " + selectedSong.getTrackName());
         //if(!isPaused){
 
-            // Build the path to the location of the media file
-            //String path = new File("src/sample/media/SampleAudio_0.4mb.mp3").getAbsolutePath();
-            String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
-            // Create new Media object (the actual media content)
-            me = new Media(new File(path).toURI().toString());
-            // Create new MediaPlayer and attach the media to be played
-            mp = new MediaPlayer(me);
-            //
-            mediaV.setMediaPlayer(mp);
-            // mp.setAutoPlay(true);
-            // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
-            mp.setAutoPlay(false);
+        // Building the path to the location of the media file
+        String path = new File("src/sample/media/" + selectedSong.getPath()).getAbsolutePath();
+        // Create new Media object (the actual media content)
+        me = new Media(new File(path).toURI().toString());
+        // Create new MediaPlayer and attach the media to be played
+        mp = new MediaPlayer(me);
+        //
+        mediaV.setMediaPlayer(mp);
+        // mp.setAutoPlay(true);
+        // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
+        mp.setAutoPlay(false);
 
         //}
 
@@ -171,14 +198,13 @@ public class Controller implements Initializable {
 
 
     @FXML
-    private void handlePause()
-    {
+    private void handlePause() {
         mp.pause();
         isPaused = true;
     }
+
     @FXML
-    private void handleStop()
-    {
+    private void handleStop() {
         mp.stop();
     }
 
@@ -186,24 +212,25 @@ public class Controller implements Initializable {
     /**
      *
      */
-    public void handleContinue () {
+    public void handleContinue() {
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
         System.out.println(selectedSong.getPath());
 
-        if(!isPaused){
-        String path = new File("src/sample/media/"+selectedSong.getPath()).getAbsolutePath();
-        // Create new Media object (the actual media content)
-        me = new Media(new File(path).toURI().toString());
-        // Create new MediaPlayer and attach the media to be played
-        mp = new MediaPlayer(me);
-        mediaV.setMediaPlayer(mp);
-        mp.setAutoPlay(false);
+        if (!isPaused) {
+            String path = new File("src/sample/media/" + selectedSong.getPath()).getAbsolutePath();
+            // Create new Media object (the actual media content)
+            me = new Media(new File(path).toURI().toString());
+            // Create new MediaPlayer and attach the media to be played
+            mp = new MediaPlayer(me);
+            mediaV.setMediaPlayer(mp);
+            mp.setAutoPlay(false);
         }
         mp.play();
 
     }
 
-    //updates all playlists
+
+     //updates all playlists
     //***To be used when the user makes changes to a playlist***
     public void updatePlaylists(ObservableList<Playlist> playlistItems){
         //adding playlists to observablelist
@@ -236,6 +263,78 @@ public class Controller implements Initializable {
 
     }
 
+
+    /**
+     * This method updates the ListView with songs to the current content that needs to be there.
+     *
+     * @param selectedPlaylist is used to get a list of all songs currently in the application.
+     */
+    public void updateSonglist(Playlist selectedPlaylist) {
+        items.setAll(selectedPlaylist.songList);
+        lvSongList.setItems(items);
+    }
+        
+        // Creates a pop up window for the user input
+        @FXML
+        public void handleCreatePlaylist ()
+        {
+            pAddPlaylist.setDisable(false);
+            pAddPlaylist.setOpacity(1.0);
+        }
+
+        //Gets user input and creates a playlist with the name specified by the user
+        @FXML
+        public void handleAddPlaylist ()
+        {
+
+            String playlistName = tfPlaylistName.getText();
+
+            for (int i = 0; i < playlistItems.size(); i++) {
+                //adding to ArrayList in playlist object
+                playlistsList.remove(playlistItems.get(i));
+            }
+
+            playlistsList.add(new Playlist(playlistName));
+            updatePlaylists(playlistItems);
+
+            //Creates a temporary object which is set to the playlist in playlislist that matches the name from the user input
+            Playlist temp = new Playlist("temp");
+            for (Playlist element : playlistsList) {
+                if (element.getPlaylistName().equals(playlistName)) {
+                    temp = element;
+                }
+            }
+                // Stores the playlist in the database
+            DB.insertSQL("insert into tblPlaylist values ('" + temp.getPlaylistName() + "','" + temp.getSequence() + "');");
+
+            //Hides the pop up window
+            pAddPlaylist.setDisable(true);
+            pAddPlaylist.setOpacity(0.0);
+
+        }
+
+       // Deletes the selected playlist
+        public void handleDeletePlaylist ()
+        {
+            Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+
+            DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '" + selectedPlaylist.getPlaylistName() + "';");
+            //DB.deleteSQL("Delete from tblPlaylist where fldSequence = 'null';");
+            //DB.deleteSQL("delete from tblPlaylist values ('"+selectedSong+"');");
+            // System.out.println(selectedPlaylist.getPlaylistName());
+
+
+            for (int i = 0; i < playlistItems.size(); i++) {
+
+                playlistsList.remove(playlistItems.get(i));
+            }
+
+
+            lvPlaylist.getItems().remove(selectedPlaylist);
+            updatePlaylists(playlistItems);
+
+
+        }
 
     //creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
     public void setPlaylistSequence(Playlist playlist){
@@ -298,20 +397,7 @@ public class Controller implements Initializable {
         }
     }
 
-    /*
-    //converting sequence from a playlist into list of ID's
-    public void convertSequenceToIDs(Playlist playlist){
-
-        ArrayList<Integer> IDList = new ArrayList<>();
-
-        //splitting the string
-        StringTokenizer IDtokens = new StringTokenizer(playlist.getSequence(), ";");
-        //adding ID's from sequence to IDArray as individual elements
-        while (IDtokens.hasMoreTokens()){
-            //System.out.println(IDtokens.nextToken());
-            IDList.add(Integer.parseInt(IDtokens.nextToken()));
-        }
-    }*/
+    
 
     public void selectNextSong(){
         //check where in the sequence the selectedSong is
@@ -321,5 +407,41 @@ public class Controller implements Initializable {
     }
 
 
+        public void updatePlaylists (ObservableList < Playlist > playlistItems) {
+            //adding playlists to observablelist
+            for (int i = 0; i < playlistsList.size(); i++) {
+                //adding to ArrayList in playlist object
+                playlistItems.add(playlistsList.get(i));
+            }
+            //Setting the items/objects in the listview
+            lvPlaylist.setItems(playlistItems);
+            lvPlaylist.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            //setting name as text in listview
+            lvPlaylist.setCellFactory(param -> new ListCell<>() {
+                @Override
+                protected void updateItem(Playlist item, boolean empty) {
+                    super.updateItem(item, empty);
 
-}
+                    if (empty || item == null || item.getPlaylistName() == null) {
+                        setText(null);
+                    } else {
+                        setText(item.getPlaylistName());
+                    }
+                }
+            });
+        }
+        @FXML
+        /**
+         * This method updates the ListView of songs to the corresponding playlist
+         */
+        private void getPlaylistInformation () {
+            // New object that gets the songs(items) from the selected playlist.
+            Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+            // Updates the ListView to show the songs(items) in the selected playlist.
+            updateSonglist(selectedPlaylist);
+
+            //System.out.println(selectedPlaylist.getSongList().size());
+            //System.out.println(selectedPlaylist.getPlaylistName());
+            //System.out.println(selectedPlaylist.getSongList().toString());
+        }
+    }

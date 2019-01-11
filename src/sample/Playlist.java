@@ -6,6 +6,7 @@ public class Playlist {
 
     private String playlistName;
     private String sequence;
+
     ArrayList<Songs> songList = new ArrayList<>();
 
     public Playlist(String playlistName){
