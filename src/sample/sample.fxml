@@ -20,7 +20,7 @@
 
 
             <Button fx:id="bDeletePlaylist" layoutX="203.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" text="Delete playlist" />
-            <ListView fx:id="lvPlaylist" layoutX="-2.0" layoutY="55.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getPlaylistInformation" prefHeight="583.0" prefWidth="343.0" />
+            <ListView fx:id="lvPlaylist" layoutX="-3.0" layoutY="55.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getPlaylistInformation" prefHeight="583.0" prefWidth="343.0" />
 
             <Label fx:id="lbPlaylist" layoutX="44.0" layoutY="9.0" prefHeight="38.0" prefWidth="250.0" text="My playlists">
                <font>
@@ -36,19 +36,25 @@
          </children></AnchorPane>
     <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Button fx:id="bStop" layoutX="634.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleStop" text="Stop" />
-            <Button fx:id="bPause" layoutX="555.0" layoutY="643.0" mnemonicParsing="false" onAction="#handlePause" text="Pause" />
-            <Button fx:id="bPlay" layoutX="479.0" layoutY="643.0" mnemonicParsing="false" onAction="#handlePlay" text="Play" />
-            <Button fx:id="bAddSongsToPlaylist" layoutX="721.0" layoutY="643.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id="bStop" layoutX="546.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleStop" text="Stop" />
+            <Button fx:id="bPause" layoutX="487.0" layoutY="643.0" mnemonicParsing="false" onAction="#handlePause" text="Pause" />
+            <Button fx:id="bPlay" layoutX="440.0" layoutY="643.0" mnemonicParsing="false" onAction="#handlePlay" text="Play" />
             <Label fx:id="lbSongTitle" layoutX="42.0" layoutY="648.0" prefHeight="21.0" prefWidth="337.0" text="Song title" />
-            <ListView fx:id="lvSongList" layoutY="57.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="600.0" />
+            <ListView fx:id="lvSongList" layoutX="7.0" layoutY="53.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="584.0" />
             <Label fx:id="lbSongs" layoutX="247.0" layoutY="11.0" text="My songs">
                <font>
                   <Font size="31.0" />
                </font>
             </Label>
             <MediaView fx:id="mediaV" fitHeight="200.0" fitWidth="200.0" layoutX="179.0" layoutY="205.0" />
-            <Button fx:id="bContinue" layoutX="401.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
+            <Button fx:id="bContinue" layoutX="360.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
+            <Button fx:id="bAddSongtoPlaylist" layoutX="604.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleAddToPlaylistPopup" text="Add song to playlist" />
+            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="357.0" layoutY="555.0" opacity="0.0" prefHeight="81.0" prefWidth="424.0">
+               <children>
+                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="41.0" prefHeight="31.0" prefWidth="301.0" promptText="Enter a playlist name" />
+                  <Button fx:id="bAddSongOK" layoutX="345.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleSongAddOK" text="OK" />
+               </children>
+            </Pane>
          </children></AnchorPane>
   </items>
 </SplitPane>
