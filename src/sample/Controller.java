@@ -1,30 +1,30 @@
 package sample;
 
-        import javafx.collections.FXCollections;
+import javafx.collections.FXCollections;
 
-        import javafx.scene.control.*;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.ListView;
-        import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 
-        import javafx.scene.layout.Pane;
-        import javafx.scene.media.*;
-        import javafx.collections.ObservableList;
-        import javafx.scene.control.MenuButton;
+import javafx.scene.layout.Pane;
+import javafx.scene.media.*;
+import javafx.collections.ObservableList;
+import javafx.scene.control.MenuButton;
 
 
-        import javafx.fxml.FXML;
-        import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 
-        import java.io.*;
-        import java.net.*;
-        import java.time.Duration;
-        import java.util.ArrayList;
-        import java.util.ResourceBundle;
-        import java.util.StringTokenizer;
+import java.io.*;
+import java.net.*;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 public class Controller implements Initializable {
-    
+
     @FXML
     private MediaView mediaV;
     @FXML
@@ -50,6 +50,8 @@ public class Controller implements Initializable {
 
 
     Songs selectedSong;
+
+    //Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
 
 
     // Declaration: ArrayLists
@@ -109,21 +111,21 @@ public class Controller implements Initializable {
         //System.out.println(myPlaylist.getSongList());
 
 
+
         //Finding the playlist called "All Songs" and storing it as allSongsPlaylist
         Playlist allSongsPlaylist = new Playlist("temp");
-        for (Playlist element : playlistsList) {
-            if (element.getPlaylistName().equals("All Songs")) {
+        for (Playlist element:playlistsList) {
+            if(element.getPlaylistName().equals("All Songs")){
                 allSongsPlaylist = element;
             }
         }
         //Adding all song objects from "All Songs" playlist to items as Songs
         ObservableList<Songs> items = FXCollections.observableArrayList();
 
+        //song2.printValues();
+        //allSongsList = myPlaylist.getSongList();
 
-
-            //song2.printValues();
-            //allSongsList = myPlaylist.getSongList();
-
+        // System.out.println(myPlaylist.getSongList());
 
         //Adding all song objects from myPlayList to items as Songs
         for (int i = 0; i < allSongsPlaylist.getSongList().size(); i++) {
@@ -145,22 +147,14 @@ public class Controller implements Initializable {
                 } else {
                     setText(item.getTrackName());
                 }
-
             }
-            // Calling updateSonglist(); to get the list of all songs on application start
-            updateSonglist(allSongsPlaylist);
-            //Setting the items/objects in the listview
-            //lvSongList.setItems(items);
-            // Using CellFactory to make the ListViewer show the names of the songs not the object
-            lvSongList.setCellFactory(param -> new ListCell<>() {
-                @Override
-                protected void updateItem(Songs item, boolean empty) {
-                    super.updateItem(item, empty);
+        });
+        // Setting the selection mode for the lvSongList so that we can actually select songs (set as single selection)
+        lvSongList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         //setting Playlists in listview
         updatePlaylists(playlistItems);
     }
-
 
 
     @FXML
@@ -239,6 +233,8 @@ public class Controller implements Initializable {
         mp.play();
 
     }
+
+
 
 
 
