@@ -29,14 +29,14 @@
             <Pane fx:id="pAddPlaylist" disable="true" layoutX="4.0" layoutY="591.0" opacity="0.0" prefHeight="46.0" prefWidth="331.0">
                <children>
                   <Button fx:id="bPlaylistAddOK" layoutX="260.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddPlaylist" text="Ok" />
-                  <TextField fx:id="tfPlaylistName" prefHeight="46.0" prefWidth="250.0" promptText="Enter a playlist name" />
+                  <TextField fx:id="tfPlaylistName" onKeyPressed="#handleKeyEnterAddPlaylist" prefHeight="46.0" prefWidth="250.0" promptText="Enter a playlist name" />
                </children>
             </Pane>
             <Button fx:id="bAddSongtoPlaylist" layoutX="215.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleAddToPlaylistPopup" text="Add song to playlist" />
             <Button fx:id="bDeleteSongFromPlaylist" layoutX="368.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleDeleteSongFromPlaylist" text="Delete song from playlist" />
-            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="9.0" layoutY="527.0" opacity="0.0" prefHeight="81.0" prefWidth="424.0">
+            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="9.0" layoutY="550.0" opacity="0.0" prefHeight="58.0" prefWidth="424.0">
                <children>
-                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="41.0" prefHeight="31.0" prefWidth="301.0" promptText="Enter a playlist name" />
+                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="41.0" onKeyPressed="#handleKeyEnterAddSong" prefHeight="31.0" prefWidth="301.0" promptText="Enter a playlist name" />
                   <Button fx:id="bAddSongOK" layoutX="345.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleSongAddOK" text="OK" />
                </children>
             </Pane>
@@ -55,7 +55,7 @@
             </Label>
             <MediaView fx:id="mediaV" fitHeight="200.0" fitWidth="200.0" layoutX="179.0" layoutY="205.0" />
             <Button fx:id="bContinue" layoutX="360.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
-            <TextField fx:id="tfSearchForSong" layoutX="338.0" layoutY="15.0" prefHeight="31.0" prefWidth="250.0" promptText="Search songs" />
+            <TextField fx:id="tfSearchForSong" layoutX="338.0" layoutY="15.0" onKeyPressed="#handleKeyEnterSearch" prefHeight="31.0" prefWidth="250.0" promptText="Search songs" />
             <Button fx:id="bSearch" layoutX="597.0" layoutY="15.0" mnemonicParsing="false" onAction="#searchForSongs" text="Search" />
          </children></AnchorPane>
   </items>
