@@ -50,6 +50,10 @@ public class Controller implements Initializable {
     Playlist allSongsPlaylist = new Playlist("temp");
 
 
+
+
+
+
     // Declaration Songs
     Songs song1 = new Songs(1);
     Songs song2 = new Songs(2);
@@ -115,6 +119,11 @@ public class Controller implements Initializable {
 
         //setting Playlists in listview
         updatePlaylists(playlistItems);
+
+        //prevents two songs playing at the same time if stop hasn't been pressed yet.
+        lvSongList.getSelectionModel().select(0);
+        handlePlay();
+        handleStop();
     }
 
 
@@ -138,7 +147,6 @@ public class Controller implements Initializable {
         me = new Media(new File(path).toURI().toString());
         // Create new MediaPlayer and attach the media to be played
         mp = new MediaPlayer(me);
-
         mediaV.setMediaPlayer(mp);
         // mp.setAutoPlay(true);
         // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
@@ -173,7 +181,6 @@ public class Controller implements Initializable {
      */
     public void handleContinue() {
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
-        System.out.println(selectedSong.getPath());
 
         if (!isPaused) {
             String path = new File("src/sample/media/" + selectedSong.getPath()).getAbsolutePath();
