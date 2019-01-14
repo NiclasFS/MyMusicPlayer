@@ -24,7 +24,7 @@ package sample;
         import java.util.StringTokenizer;
 
 public class Controller implements Initializable {
-    
+
     @FXML
     private MediaView mediaV;
     @FXML
