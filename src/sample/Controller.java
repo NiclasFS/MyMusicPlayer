@@ -10,7 +10,7 @@ package sample;
         import javafx.scene.layout.Pane;
         import javafx.scene.media.*;
         import javafx.collections.ObservableList;
-        import javafx.scene.control.MenuButton;
+
 
 
         import javafx.fxml.FXML;
@@ -30,16 +30,15 @@ public class Controller implements Initializable {
     @FXML
     private Button bPlay, bPause, bStop, bAddSongtoPlaylist, bAddPlaylist, bEditPlaylist, bDeletePlaylist;
     @FXML
-    private Button bContinue, bPlaylistAddOK, bCreatePlaylist, bAddSongOK;
-    @FXML
-    private MenuButton mbPlaylistlist;
+    private Button bContinue, bPlaylistAddOK, bCreatePlaylist, bAddSongOK,bDeleteSongFromPlaylist, bSearch;
+
 
     @FXML
     private Label lbSongs, lbPlaylist, lbSongTitle;
     @FXML
     private Pane pAddPlaylist, pAddSongToPlaylist;
     @FXML
-    private TextField tfPlaylistName, tfAddSongtoPlaylist;
+    private TextField tfPlaylistName, tfAddSongtoPlaylist, tfSearchForSong;
     @FXML
     private ListView<Playlist> lvPlaylist;
     @FXML
@@ -50,15 +49,21 @@ public class Controller implements Initializable {
 
 
     Songs selectedSong;
+    Playlist selectedPlaylist = new Playlist("SelectedPlaylist");
 
     //Playlist myPlaylist = new Playlist("All Songs"); //The playlist containing all songs
+
 
 
     // Declaration: ArrayLists
     ArrayList<Playlist> playlistsList = new ArrayList<>(); //arraylist containing all playlist
     // Declaration: Playlists
 
-    Playlist deleteTester = new Playlist("Delete tester");
+    Playlist searchResult = new Playlist("Search results");
+
+    Playlist allSongsPlaylist = new Playlist("temp");
+
+
     // Declaration Songs
 
     Songs song1 = new Songs(1);
@@ -113,7 +118,7 @@ public class Controller implements Initializable {
 
 
         //Finding the playlist called "All Songs" and storing it as allSongsPlaylist
-        Playlist allSongsPlaylist = new Playlist("temp");
+
         for (Playlist element:playlistsList) {
             if(element.getPlaylistName().equals("All Songs")){
                 allSongsPlaylist = element;
@@ -145,7 +150,7 @@ public class Controller implements Initializable {
                 if (empty || item == null || item.getTrackName() == null) {
                     setText(null);
                 } else {
-                    setText(item.getTrackName());
+                    setText( item.getArtistName()+ " - " +item.getTrackName());
                 }
             }
         });
@@ -411,7 +416,7 @@ public class Controller implements Initializable {
      */
     private void getPlaylistInformation () {
         // New object that gets the songs(items) from the selected playlist.
-        Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+         selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
         // Updates the ListView to show the songs(items) in the selected playlist.
         updateSonglist(selectedPlaylist);
 
@@ -420,29 +425,26 @@ public class Controller implements Initializable {
         //System.out.println(selectedPlaylist.getSongList().toString());
     }
 
+    /**
+     * This method removes the selected song from the selected playlist
+     */
     @FXML
-    public void addSongToPlaylist ()
-    {
+    public void handleDeleteSongFromPlaylist () {
 
-        MenuItem menuItem = new MenuItem("asdsg");
+        Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
+        // DB.deleteSQL("Delete from tblPlaylist where fldSequence = '" + selectedSong.getSongID() + "';");
 
+        for (int i = 0; i <selectedPlaylist.getSongList().size() ; i++) {
 
-        ObservableList<MenuItem> temp = FXCollections.observableArrayList();
-
-
-        mbPlaylistlist.getItems().addAll(new MenuItem("Peter"), new MenuItem("Jakob"));
-        mbPlaylistlist.getItems().add(menuItem);
-
-        //menuItem.setOnAction();
-
-        /*
-        for (int i = 0; i < 1; i++) {
-
-            mbPlaylistlist.getItems().add(menuItem);
+            if (selectedSong.getSongID()== selectedPlaylist.getSongList().get(i).getSongID()){
+                selectedPlaylist.getSongList().remove(i);
+            }
 
         }
-*/
+        setPlaylistSequence(selectedPlaylist);
+        updateSonglist(selectedPlaylist);
     }
+
 
     // Creates a pop up window for the user input
 
@@ -481,6 +483,37 @@ public class Controller implements Initializable {
         pAddSongToPlaylist.setDisable(true);
         pAddSongToPlaylist.setOpacity(0.0);
 
+
+    }
+    @FXML
+    public void searchForSongs()
+    {
+
+        //delete all songs from searchresult
+        for (int i = searchResult.getSongList().size()-1; i >= 0; i--) {
+            searchResult.getSongList().remove(i);
+        }
+        //update songlist listview
+        updateSonglist(searchResult);
+
+        //store user input
+        String userInput = tfSearchForSong.getText();
+
+        //does trackname/artist contain userinput
+
+
+
+        for (Songs element: allSongsPlaylist.getSongList()) {
+            if (element.getTrackName().toLowerCase().contains(userInput.toLowerCase()) || element.getArtistName().toLowerCase().contains(userInput.toLowerCase()))
+            {
+                System.out.println("found");
+                //add song to searchresult
+                searchResult.addSongToPlaylist(element);
+            }
+        }
+
+        //update listview
+        updateSonglist(searchResult);
 
     }
 
