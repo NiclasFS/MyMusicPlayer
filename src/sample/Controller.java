@@ -151,23 +151,29 @@ public class Controller implements Initializable {
         // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
         mp.setAutoPlay(false);
 
+        //getNextSongID(selectedSong, myPlaylist);
         mp.setOnEndOfMedia(() -> {
             selectNextSong();
             handlePlay();
         });
 
-        //getNextSongID(selectedSong, myPlaylist);
 
         mp.play();
 
     }
 
+    /**
+     *Handler for the pause button
+     */
     @FXML
     private void handlePause() {
         mp.pause();
         isPaused = true;
     }
 
+    /**
+     * Handler for the stop button
+     */
     @FXML
     private void handleStop() {
         mp.stop();
@@ -175,9 +181,7 @@ public class Controller implements Initializable {
 
 
     @FXML
-    /**
-     *
-     */
+
     public void handleContinue() {
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
@@ -204,7 +208,9 @@ public class Controller implements Initializable {
         lvSongList.setItems(items);
     }
 
-    // Creates a pop up window for the user input
+    /**
+     * This methods creates a pop-up window for the user input
+      */
     @FXML
     public void handleCreatePlaylist ()
     {
@@ -212,7 +218,9 @@ public class Controller implements Initializable {
         pAddPlaylist.setOpacity(1.0);
     }
 
-    //Gets user input and creates a playlist with the name specified by the user
+    /**
+     * This method gets the user input and creates a playlist with the name specified by the user
+     */
     @FXML
     public void handleAddPlaylist ()
     {
@@ -244,24 +252,33 @@ public class Controller implements Initializable {
         tfPlaylistName.setText("");
     }
 
-    // Deletes the selected playlist
+    /**
+     * This method deletes the selected playlist from the listview and the database
+     */
     public void handleDeletePlaylist ()
     {
         Playlist selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
 
-        DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '" + selectedPlaylist.getPlaylistName() + "';");
+        if (!selectedPlaylist.getPlaylistName().equals("All Songs")) {
 
 
-        for (int i = 0; i < playlistItems.size(); i++) {
+            DB.deleteSQL("Delete from tblPlaylist where fldPlaylistName = '" + selectedPlaylist.getPlaylistName() + "';");
 
-            playlistsList.remove(playlistItems.get(i));
+
+            for (int i = 0; i < playlistItems.size(); i++) {
+
+                playlistsList.remove(playlistItems.get(i));
+            }
+
+            lvPlaylist.getItems().remove(selectedPlaylist);
+            updatePlaylists(playlistItems);
         }
-
-        lvPlaylist.getItems().remove(selectedPlaylist);
-        updatePlaylists(playlistItems);
     }
 
-    //creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
+    /**
+     * creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
+     * @param playlist is used
+     */
     public void setPlaylistSequence(Playlist playlist){
         String sequence = "";
         for (int i = 0; i < playlist.getSongList().size(); i++) {

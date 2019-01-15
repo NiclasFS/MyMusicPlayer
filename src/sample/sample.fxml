@@ -33,12 +33,6 @@
                   <Font size="31.0" />
                </font>
             </Label>
-            <Pane fx:id="pAddPlaylist" disable="true" layoutX="4.0" layoutY="591.0" opacity="0.0" prefHeight="46.0" prefWidth="331.0">
-               <children>
-                  <Button fx:id="bPlaylistAddOK" layoutX="260.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddPlaylist" text="Ok" />
-                  <TextField fx:id="tfPlaylistName" onKeyPressed="#handleKeyEnterAddPlaylist" prefHeight="46.0" prefWidth="250.0" promptText="Enter a playlist name" />
-               </children>
-            </Pane>
             <Button fx:id="bAddSongtoPlaylist" layoutX="195.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleAddToPlaylistPopup" prefHeight="50.0" prefWidth="70.0" style="-fx-background-color: #2963C6;" text="+♫ " textFill="#fffdfd">
                <font>
                   <Font name="System Bold" size="20.0" />
@@ -47,10 +41,16 @@
                <font>
                   <Font name="System Bold" size="20.0" />
                </font></Button>
-            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="9.0" layoutY="550.0" opacity="0.0" prefHeight="58.0" prefWidth="424.0">
+            <Pane fx:id="pAddPlaylist" disable="true" layoutY="531.0" opacity="0.0" prefHeight="46.0" prefWidth="331.0">
                <children>
-                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="41.0" onKeyPressed="#handleKeyEnterAddSong" prefHeight="31.0" prefWidth="301.0" promptText="Enter a playlist name" />
-                  <Button fx:id="bAddSongOK" layoutX="345.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleSongAddOK" text="OK" />
+                  <Button fx:id="bPlaylistAddOK" layoutX="250.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleAddPlaylist" prefHeight="31.0" prefWidth="40.0" text="Ok" />
+                  <TextField fx:id="tfPlaylistName" layoutY="17.0" onKeyPressed="#handleKeyEnterAddPlaylist" prefHeight="31.0" prefWidth="250.0" promptText="Enter a playlist name" />
+               </children>
+            </Pane>
+            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="5.0" layoutY="483.0" opacity="0.0" prefHeight="61.0" prefWidth="361.0">
+               <children>
+                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="15.0" onKeyPressed="#handleKeyEnterAddSong" prefHeight="31.0" prefWidth="242.0" promptText="Enter a playlist name" />
+                  <Button fx:id="bAddSongOK" layoutX="240.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleSongAddOK" prefHeight="31.0" prefWidth="50.0" text="OK" />
                </children>
             </Pane>
          </children>
