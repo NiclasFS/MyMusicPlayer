@@ -280,7 +280,7 @@ public class Controller implements Initializable {
 
     /**
      * creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
-     * @param playlist is used
+     * @param playlist The playlist for which the sequence should be set
      */
     public void setPlaylistSequence(Playlist playlist){
         String sequence = "";
