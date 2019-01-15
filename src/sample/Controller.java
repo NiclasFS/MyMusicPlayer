@@ -279,7 +279,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
+     * Creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
      * @param playlist The playlist for which the sequence should be set
      */
     public void setPlaylistSequence(Playlist playlist){
@@ -297,6 +297,11 @@ public class Controller implements Initializable {
         DB.updateSQL("update tblPlaylist set fldSequence = '"+sequence+"' where fldPlaylistName = '"+playlist.getPlaylistName()+"'");
     }
 
+     /**
+     * Gets information of all playlists from DB and creates playlist objects with it.
+     * PlaylistName is stored in list to be used for the creation of the object.
+     * Sequence is split into individual ID's that are used to identify the correct songs to be added to the playlist.
+     */
     public void loadPlaylistsFromDB(){
         ArrayList<String> nameList = new ArrayList<>();
         //Get all name Strings from tblPlaylist
@@ -347,10 +352,13 @@ public class Controller implements Initializable {
     }
 
 
-
+     /**
+     * Moving the listview selection to the next item in the list
+     */
     public void selectNextSong(){
-        //check where in the sequence the selectedSong is
+        //storing the currently selected song
         int songIndex = lvSongList.getSelectionModel().getSelectedIndex();
+        //setting selection to current +1
         songIndex++;
         lvSongList.getSelectionModel().select(songIndex);
     }
