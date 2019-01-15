@@ -34,7 +34,6 @@ public class Controller implements Initializable {
     private ListView<Playlist> lvPlaylist;
     @FXML
     private ListView<Songs> lvSongList;
-    @FXML
     private MediaPlayer mp;
     private Media me;
 
