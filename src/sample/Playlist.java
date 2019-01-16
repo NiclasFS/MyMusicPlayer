@@ -14,7 +14,12 @@ public class Playlist {
     }
 
 
-    // Adds a song object to the song list
+
+
+    /**
+     * Adds a song object to the song list
+     * @param song The song to be added to a playlist
+     */
     public void addSongToPlaylist(Songs song)
     {
         //Getting the values from the database and storing it in the song object

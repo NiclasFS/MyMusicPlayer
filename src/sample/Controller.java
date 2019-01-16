@@ -408,8 +408,9 @@ public class Controller implements Initializable {
     }
 
 
-    // Creates a pop up window for the user input
-
+    /**
+     * Creates a pop up window for the user input
+     */
     @FXML
     public void handleAddToPlaylistPopup() {
         pAddSongToPlaylist.setDisable(false);
