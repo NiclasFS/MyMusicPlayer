@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -11,52 +12,102 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="1147.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<SplitPane dividerPositions="0.4314410480349345" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="1147.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
   <items>
-    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="447.0">
+    <AnchorPane maxWidth="447.0" minHeight="-Infinity" minWidth="447.0" prefHeight="688.0" prefWidth="447.0" style="-fx-background-color: #A5BEE9;">
          <children>
-            <Button fx:id="bCreatePlaylist" layoutX="4.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleCreatePlaylist" text="Add playlist" />
+            <Button fx:id="bCreatePlaylist" layoutX="20.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleCreatePlaylist" prefHeight="50.0" prefWidth="70.0" style="-fx-background-color: #2963C6;" text="+≡⋮" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font></Button>
 
 
-            <Button fx:id="bDeletePlaylist" layoutX="102.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" text="Delete playlist" />
-            <ListView fx:id="lvPlaylist" layoutX="-3.0" layoutY="55.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getPlaylistInformation" prefHeight="583.0" prefWidth="447.0" />
+            <Button fx:id="bDeletePlaylist" layoutX="100.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" prefHeight="51.0" prefWidth="85.0" style="-fx-background-color: #2963C6;" text="🗑≡⋮" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font></Button>
+            <ListView fx:id="lvPlaylist" layoutY="53.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#getPlaylistInformation" prefHeight="532.0" prefWidth="447.0" style="-fx-border-color: #FEF965;" />
 
-            <Label fx:id="lbPlaylist" layoutX="44.0" layoutY="9.0" prefHeight="38.0" prefWidth="250.0" text="My playlists">
+            <Label fx:id="lbPlaylist" layoutX="14.0" layoutY="7.0" prefHeight="38.0" prefWidth="250.0" text="My playlists" textFill="WHITE">
                <font>
                   <Font size="31.0" />
                </font>
             </Label>
-            <Pane fx:id="pAddPlaylist" disable="true" layoutX="4.0" layoutY="591.0" opacity="0.0" prefHeight="46.0" prefWidth="331.0">
+            <Button fx:id="bAddSongtoPlaylist" layoutX="195.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleAddToPlaylistPopup" prefHeight="50.0" prefWidth="70.0" style="-fx-background-color: #2963C6;" text="+♫ " textFill="#fffdfd">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font></Button>
+            <Button fx:id="bDeleteSongFromPlaylist" layoutX="275.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleDeleteSongFromPlaylist" prefHeight="50.0" prefWidth="70.0" style="-fx-background-color: #2963C6;" text="-♫" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font></Button>
+            <Pane fx:id="pAddPlaylist" disable="true" layoutY="531.0" opacity="0.0" prefHeight="46.0" prefWidth="331.0">
                <children>
-                  <Button fx:id="bPlaylistAddOK" layoutX="260.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAddPlaylist" text="Ok" />
-                  <TextField fx:id="tfPlaylistName" onKeyPressed="#handleKeyEnterAddPlaylist" prefHeight="46.0" prefWidth="250.0" promptText="Enter a playlist name" />
+                  <Button fx:id="bPlaylistAddOK" layoutX="250.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleAddPlaylist" prefHeight="31.0" prefWidth="40.0" text="Ok" />
+                  <TextField fx:id="tfPlaylistName" layoutY="17.0" onKeyPressed="#handleKeyEnterAddPlaylist" prefHeight="31.0" prefWidth="250.0" promptText="Enter a playlist name" />
                </children>
             </Pane>
-            <Button fx:id="bAddSongtoPlaylist" layoutX="215.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleAddToPlaylistPopup" text="Add song to playlist" />
-            <Button fx:id="bDeleteSongFromPlaylist" layoutX="368.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleDeleteSongFromPlaylist" text="Delete song from playlist" />
-            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="9.0" layoutY="550.0" opacity="0.0" prefHeight="58.0" prefWidth="424.0">
+            <Pane fx:id="pAddSongToPlaylist" disable="true" layoutX="5.0" layoutY="483.0" opacity="0.0" prefHeight="61.0" prefWidth="361.0">
                <children>
-                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="41.0" onKeyPressed="#handleKeyEnterAddSong" prefHeight="31.0" prefWidth="301.0" promptText="Enter a playlist name" />
-                  <Button fx:id="bAddSongOK" layoutX="345.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleSongAddOK" text="OK" />
+                  <TextField fx:id="tfAddSongtoPlaylist" layoutY="15.0" onKeyPressed="#handleKeyEnterAddSong" prefHeight="31.0" prefWidth="242.0" promptText="Enter a playlist name" />
+                  <Button fx:id="bAddSongOK" layoutX="240.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleSongAddOK" prefHeight="31.0" prefWidth="50.0" text="OK" />
                </children>
             </Pane>
-         </children></AnchorPane>
-    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="100.0">
+         </children>
+         <effect>
+            <InnerShadow />
+         </effect></AnchorPane>
+    <AnchorPane maxWidth="700.0" minHeight="-Infinity" minWidth="700.0" prefHeight="688.0" prefWidth="638.0" style="-fx-background-color: #A5BEE9;">
          <children>
-            <Button fx:id="bStop" layoutX="546.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleStop" text="Stop" />
-            <Button fx:id="bPause" layoutX="487.0" layoutY="643.0" mnemonicParsing="false" onAction="#handlePause" text="Pause" />
-            <Button fx:id="bPlay" layoutX="440.0" layoutY="643.0" mnemonicParsing="false" onAction="#handlePlay" text="Play" />
-            <Label fx:id="lbSongTitle" layoutX="42.0" layoutY="648.0" prefHeight="21.0" prefWidth="337.0" text="Song title" />
-            <ListView fx:id="lvSongList" layoutX="7.0" layoutY="53.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="584.0" />
-            <Label fx:id="lbSongs" layoutX="7.0" layoutY="7.0" text="My songs">
+            <Button fx:id="bStop" layoutX="590.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleStop" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #2963C6;" text="⏹" textFill="#ffeeee">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button fx:id="bPause" layoutX="530.0" layoutY="620.0" mnemonicParsing="false" onAction="#handlePause" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #2963C6;" text="⏸" textFill="#f8f7f7">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button fx:id="bPlay" layoutX="410.0" layoutY="620.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #2963C6;" text="⏵" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Label fx:id="lbSongTitle" layoutX="7.0" layoutY="636.0" prefHeight="35.0" prefWidth="361.0" text="Track playing" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
+            <ListView fx:id="lvSongList" layoutX="-1.0" layoutY="53.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="642.0" />
+            <Label fx:id="lbSongs" layoutX="7.0" layoutY="9.0" text="My songs" textFill="WHITE">
                <font>
                   <Font size="31.0" />
                </font>
             </Label>
             <MediaView fx:id="mediaV" fitHeight="200.0" fitWidth="200.0" layoutX="179.0" layoutY="205.0" />
-            <Button fx:id="bContinue" layoutX="360.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
-            <TextField fx:id="tfSearchForSong" layoutX="338.0" layoutY="15.0" onKeyPressed="#handleKeyEnterSearch" prefHeight="31.0" prefWidth="250.0" promptText="Search songs" />
-            <Button fx:id="bSearch" layoutX="597.0" layoutY="15.0" mnemonicParsing="false" onAction="#searchForSongs" text="Search" />
-         </children></AnchorPane>
+            <Button fx:id="bContinue" layoutX="470.0" layoutY="620.0" mnemonicParsing="false" onAction="#handleContinue" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #2963C6;" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <TextField fx:id="tfSearchForSong" layoutX="287.0" layoutY="13.0" onKeyPressed="#handleKeyEnterSearch" prefHeight="39.0" prefWidth="276.0" promptText="Search songs">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect></TextField>
+            <Button fx:id="bSearch" layoutX="563.0" layoutY="13.0" mnemonicParsing="false" onAction="#searchForSongs" style="-fx-background-color: #2963C6;" text="Search" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect></Button>
+            <Label alignment="CENTER_RIGHT" layoutX="485.0" layoutY="626.0" mouseTransparent="true" prefHeight="38.0" prefWidth="20.0" rotate="90.0" text="⏏" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <effect>
+            <InnerShadow />
+         </effect></AnchorPane>
   </items>
 </SplitPane>

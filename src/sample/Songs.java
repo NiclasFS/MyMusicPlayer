@@ -11,7 +11,10 @@ private int songID;
         this.songID = songID;
     }
 
-
+ /**
+     * Used for testing
+     * @return
+     */
     public String printValues(){
 
         return "trackname: " + trackName + "\n artistname: " + artistName + "\n path: " + path + "\n";
