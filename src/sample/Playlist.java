@@ -14,9 +14,7 @@ public class Playlist {
     }
 
 
-
-
-    /**
+     /**
      * Adds a song object to the song list
      * @param song The song to be added to a playlist
      */

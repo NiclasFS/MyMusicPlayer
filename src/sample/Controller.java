@@ -181,10 +181,12 @@ public class Controller implements Initializable {
 
 
     @FXML
-
+         /**
+     * This method handles the continue button. It continues playing the song from where it was paused.
+     */
     public void handleContinue() {
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
-
+        // Continues the song from where it was paused, but only if it has been paused.
         if (!isPaused) {
             String path = new File("src/sample/media/" + selectedSong.getPath()).getAbsolutePath();
             // Create new Media object (the actual media content)
@@ -200,11 +202,12 @@ public class Controller implements Initializable {
 
     /**
      * This method updates the ListView with songs to the current content that needs to be there.
-     *
      * @param selectedPlaylist is used to get a list of all songs currently in the application.
      */
     public void updateSonglist(Playlist selectedPlaylist) {
+            // Sets the items to all the items in the selected playlist.
         items.setAll(selectedPlaylist.songList);
+            // Sets the ListView to the new list of items.
         lvSongList.setItems(items);
     }
 
@@ -276,8 +279,8 @@ public class Controller implements Initializable {
     }
 
     /**
-     * creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
-     * @param playlist is used
+     * Creates a sequence for a playlist by looking at the songlist of that playlist, and stores it in tblPlaylist
+     * @param playlist The playlist for which the sequence should be set
      */
     public void setPlaylistSequence(Playlist playlist){
         String sequence = "";
@@ -294,6 +297,11 @@ public class Controller implements Initializable {
         DB.updateSQL("update tblPlaylist set fldSequence = '"+sequence+"' where fldPlaylistName = '"+playlist.getPlaylistName()+"'");
     }
 
+     /**
+     * Gets information of all playlists from DB and creates playlist objects with it.
+     * PlaylistName is stored in list to be used for the creation of the object.
+     * Sequence is split into individual ID's that are used to identify the correct songs to be added to the playlist.
+     */
     public void loadPlaylistsFromDB(){
         ArrayList<String> nameList = new ArrayList<>();
         //Get all name Strings from tblPlaylist
@@ -344,10 +352,13 @@ public class Controller implements Initializable {
     }
 
 
-
+     /**
+     * Moving the listview selection to the next item in the list
+     */
     public void selectNextSong(){
-        //check where in the sequence the selectedSong is
+        //storing the currently selected song
         int songIndex = lvSongList.getSelectionModel().getSelectedIndex();
+        //setting selection to current +1
         songIndex++;
         lvSongList.getSelectionModel().select(songIndex);
     }
@@ -383,6 +394,7 @@ public class Controller implements Initializable {
     private void getPlaylistInformation () {
         // New object that gets the songs(items) from the selected playlist.
          selectedPlaylist = lvPlaylist.getSelectionModel().getSelectedItem();
+
         // Updates the ListView to show the songs(items) in the selected playlist.
         updateSonglist(selectedPlaylist);
 
@@ -408,10 +420,11 @@ public class Controller implements Initializable {
     }
 
 
-    /**
-     * Creates a pop up window for the user input
-     */
+
     @FXML
+        /**
+     * This method creates a pop up window for the user input.
+     */
     public void handleAddToPlaylistPopup() {
         pAddSongToPlaylist.setDisable(false);
         pAddSongToPlaylist.setOpacity(1.0);
@@ -444,19 +457,37 @@ public class Controller implements Initializable {
 
     }
     @FXML
+          /**
+     * This method enables the user to press ENTER/RETURN key on the keyboard to add a song to a playlist.
+     * It's a substitute for pressing the 'OK' button
+     * @param ke is the KeyEvent for the ENTER/Return key.
+     */
     public void handleKeyEnterAddSong (KeyEvent ke) {
+            // An if statement to check if the pressed key is ENTER, if it is it will run the handleSongOK(); method
         if (ke.getCode().equals(KeyCode.ENTER)) {
             handleSongAddOK();
         }
     }
     @FXML
+         /**
+     * This method enables the user to press ENTER/RETURN key on the keyboard add a new playlist with the inputted name.
+     * It's a substitute for pressing the 'OK' button
+     * @param ke is the KeyEvent for the ENTER/Return key.
+     */
     public void handleKeyEnterAddPlaylist (KeyEvent ke) {
+            // An if statement to check if the pressed key is ENTER, if it is it will run the handleAddPlaylist(); method
         if (ke.getCode().equals(KeyCode.ENTER)) {
             handleAddPlaylist();
         }
     }
     @FXML
+        /**
+     * This method enables the user to press ENTER/RETURN key on the keyboard to search for songs.
+     * It's a substitute for pressing the 'search' button
+     * @param ke is the KeyEvent for the ENTER/Return key.
+     */
     public void handleKeyEnterSearch (KeyEvent ke) {
+            // An if statement to check if the pressed key is ENTER, if it is it will run the searchForSongs(); method
         if (ke.getCode().equals(KeyCode.ENTER)) {
             searchForSongs();
         }
