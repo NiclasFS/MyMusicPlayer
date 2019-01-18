@@ -1,21 +1,21 @@
 package sample;
-import javafx.collections.FXCollections;
-import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.media.*;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import java.io.*;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.StringTokenizer;
+        import javafx.collections.FXCollections;
+        import javafx.scene.control.*;
+        import javafx.scene.control.Label;
+        import javafx.scene.control.ListView;
+        import javafx.scene.control.SelectionMode;
+        import javafx.scene.input.KeyCode;
+        import javafx.scene.input.KeyEvent;
+        import javafx.scene.layout.Pane;
+        import javafx.scene.media.*;
+        import javafx.collections.ObservableList;
+        import javafx.fxml.FXML;
+        import javafx.fxml.Initializable;
+        import java.io.*;
+        import java.net.*;
+        import java.util.ArrayList;
+        import java.util.ResourceBundle;
+        import java.util.StringTokenizer;
 
 public class Controller implements Initializable {
     @FXML
@@ -49,19 +49,6 @@ public class Controller implements Initializable {
     Playlist allSongsPlaylist = new Playlist("temp");
 
 
-
-
-
-
-    // Declaration Songs
-    Songs song1 = new Songs(1);
-    Songs song2 = new Songs(2);
-    Songs song3 = new Songs(3);
-    Songs song4 = new Songs(4);
-    Songs song5 = new Songs(5);
-    Songs song6 = new Songs(6);
-
-
     // Declaration: ObservableList
     ObservableList<Songs> items = FXCollections.observableArrayList();
     ObservableList<Playlist> playlistItems = FXCollections.observableArrayList();
@@ -87,11 +74,11 @@ public class Controller implements Initializable {
                 allSongsPlaylist = element;
             }
         }
-        //Adding all song objects from "All Songs" playlist to items as Songs
+
         ObservableList<Songs> items = FXCollections.observableArrayList();
 
 
-        //Adding all song objects from myPlayList to items as Songs
+        //Adding all song objects from allSongsPlaylist to items as Songs
         for (int i = 0; i < allSongsPlaylist.getSongList().size(); i++) {
             //adding to ArrayList in playlist object
             items.add(allSongsPlaylist.songList.get(i));
@@ -151,7 +138,7 @@ public class Controller implements Initializable {
         // If autoplay is turned of the method play(), stop(), pause() etc controls how/when medias are played
         mp.setAutoPlay(false);
 
-        //getNextSongID(selectedSong, myPlaylist);
+        // Keeps track of when the songs ends and starts the next song
         mp.setOnEndOfMedia(() -> {
             selectNextSong();
             handlePlay();
@@ -186,7 +173,7 @@ public class Controller implements Initializable {
      */
     public void handleContinue() {
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
-        // Continues the song from where it was paused, but only if it has been paused.
+        // If isPaused is false, the play button functions as normally
         if (!isPaused) {
             String path = new File("src/sample/media/" + selectedSong.getPath()).getAbsolutePath();
             // Create new Media object (the actual media content)
@@ -196,6 +183,8 @@ public class Controller implements Initializable {
             mediaV.setMediaPlayer(mp);
             mp.setAutoPlay(false);
         }
+
+        // Continues the song from where it was paused
         mp.play();
 
     }
@@ -229,11 +218,12 @@ public class Controller implements Initializable {
     {
         String playlistName = tfPlaylistName.getText();
 
+        // Removes all items from the listView
         for (int i = 0; i < playlistItems.size(); i++) {
-            //adding to ArrayList in playlist object
             playlistsList.remove(playlistItems.get(i));
         }
 
+        // Adds all the playlist to the listView
         playlistsList.add(new Playlist(playlistName));
         updatePlaylists(playlistItems);
 
@@ -304,7 +294,7 @@ public class Controller implements Initializable {
      */
     public void loadPlaylistsFromDB(){
         ArrayList<String> nameList = new ArrayList<>();
-        //Get all name Strings from tblPlaylist
+        //Get all playlistName Strings from tblPlaylist
         DB.selectSQL("Select fldPlaylistName from tblPlaylist");
         do{
             String data = DB.getData();
@@ -408,6 +398,7 @@ public class Controller implements Initializable {
 
         Songs selectedSong = lvSongList.getSelectionModel().getSelectedItem();
 
+        // If the selected songID matches an existing songID from the playlist, it is deleted
         for (int i = 0; i <selectedPlaylist.getSongList().size() ; i++) {
 
             if (selectedSong.getSongID()== selectedPlaylist.getSongList().get(i).getSongID()){
@@ -415,6 +406,7 @@ public class Controller implements Initializable {
             }
 
         }
+        // Updates the sequence and the listView
         setPlaylistSequence(selectedPlaylist);
         updateSonglist(selectedPlaylist);
     }
